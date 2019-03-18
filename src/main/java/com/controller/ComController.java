@@ -114,4 +114,8 @@ public class ComController {
 		return "home";
 	}
 	
+	@RequestMapping(value = { "/k-drive"}, method = RequestMethod.GET)
+	public String homePage(ModelMap m) {
+		return "k-drive";
+	}	
 }

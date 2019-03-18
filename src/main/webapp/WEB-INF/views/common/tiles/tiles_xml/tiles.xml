@@ -25,6 +25,11 @@
        <put-attribute name="body" value="/WEB-INF/views/common/view/message.jsp" />  
    </definition>
    <!-- Product Page -->
+   <definition name="k-drive" extends="base-definition">  
+       <put-attribute name="title" value="K-DRIVE" />  
+       <put-attribute name="body" value="/WEB-INF/views/common/view/k-drive.jsp" />  
+   </definition>   
+   <!-- Product Page -->
    <definition name="login" extends="base-definition">  
        <put-attribute name="title" value="로그인" />  
        <put-attribute name="body" value="/WEB-INF/views/common/view/login.jsp" />
