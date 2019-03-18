@@ -115,7 +115,7 @@ public class ComController {
 	}
 	
 	@RequestMapping(value = { "/k-drive"}, method = RequestMethod.GET)
-	public String homePage(ModelMap m) {
+	public String k_drive(ModelMap m) {
 		return "k-drive";
 	}	
 }
