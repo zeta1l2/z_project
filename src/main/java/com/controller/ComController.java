@@ -117,5 +117,10 @@ public class ComController {
 	@RequestMapping(value = { "/k-drive"}, method = RequestMethod.GET)
 	public String k_drive(ModelMap m) {
 		return "k-drive";
+	}
+	
+	@RequestMapping(value = { "/c-test"}, method = RequestMethod.GET)
+	public String c_test(ModelMap m) {
+		return "c-test";
 	}	
 }
