@@ -30,7 +30,7 @@ import beans.UserBean;
 public class ComController {
 	public static String RSA_INSTANCE="rsa";
 	@Autowired TestMappable testMappable;
-	@Autowired  ComMap cm;
+	@Autowired ComMap cm;
 	@Autowired PasswordEncode pe;
 	@Autowired ComService cs;
 	

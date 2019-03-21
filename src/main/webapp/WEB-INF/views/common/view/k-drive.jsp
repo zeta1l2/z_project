@@ -34,10 +34,8 @@ $(document).ready(function() {
 	var treeview = $("#treeview-left").kendoTreeView({
 	    dragAndDrop: true,
 	    select: onSelect,
-	    dragstart: onDragStart,
-		drag: onDrag,
-		drop: onDrop,
-		dragend: onDragEnd,
+	    drop: onDrop,
+	    drag: onDrag,
 	    dataSource: [
 	        { text: "Furniture", expanded: true, id: 1, items: [
 	            { text: "Tables & Chairs", id: 2 },
@@ -57,43 +55,44 @@ $(document).ready(function() {
 		var barDataItem = treeview.dataSource.get($("#appendNodeNo").val());
 		var barElement = treeview.findByUid(barDataItem.uid);		
 		treeview.select(barElement);
-		var selectedNode = treeview.select();
-		
+				
 		treeview.append({
 			text: $("#appendNodeText").val()			
-		}, selectedNode);
+		}, barElement);
 	});
 
-	function onSelect(e) {		
-	    console.log("Selecting: " + this.text(e.node));	    
+	function onSelect(e) {	    
+	    var bar = treeview.dataItem(e.node);
+	    console.log(bar.id)
 	}
 	
 	function onDragStart(e) {
-		console.log("Started dragging " + this.text(e.sourceNode));		
+		console.log("Started dragging " + this.text(e.sourceNode));				
 	}
 	
 	function onDrag(e) {
-		console.log("Dragging " + this.text(e.sourceNode));
+		if (e.statusClass.indexOf("insert") >= 0) {
+		    // deny the operation
+		    e.setStatusClass("k-i-cancel");
+		}
 	}
 	
 	function onDrop(e) {
-		console.log(
-	    "Dropped " + this.text(e.sourceNode) +
-	    " (" + (e.valid ? "valid" : "invalid") + ")"
-	    );
+		if(e.valid) {
+			if (kendo.keys.CTRL == e.keyCode) {
+                console.log("ctrl key press");
+            }
+			var start = treeview.dataItem(e.sourceNode);
+			var end = treeview.dataItem(e.dropTarget);
+			console.log("Select : " + start.id + "  Target : " + end.id);
+		}
 	}
 	
 	function onDragEnd(e) {
 		console.log("Finished dragging end");		
 	}	
 
-	$("#treeview-right").kendoTreeView({
-	    dragAndDrop: true,
-	    select: onSelect,
-	    dragstart: onDragStart,
-		drag: onDrag,
-		drop: onDrop,
-		dragend: onDragEnd,
+	$("#treeview-right").kendoTreeView({	    	    
 	    dataSource: [
 	        { text: "Storage", expanded: true, uid: 9, items: [
 	            { text: "Wall Shelving", uid: 10 },
