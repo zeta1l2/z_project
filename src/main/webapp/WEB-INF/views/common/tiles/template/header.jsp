@@ -4,11 +4,11 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <c:url var="path" value="/" />
 <link rel="stylesheet" href="<c:url value='/css/login_form.css'/>">
-<script src="${path}js/login_form.js"></script>
-<script src="${path}js/rsa.js"></script>
-<script src="${path}js/jsbn.js"></script>
-<script src="${path}js/prng4.js"></script>
-<script src="${path}js/rng.js"></script>
+<script src="${pageContext.request.contextPath}/js/login_form.js"></script>
+<script src="${pageContext.request.contextPath}/js/rsa.js"></script>
+<script src="${pageContext.request.contextPath}/js/jsbn.js"></script>
+<script src="${pageContext.request.contextPath}/js/prng4.js"></script>
+<script src="${pageContext.request.contextPath}/js/rng.js"></script>
 <div class="mother-grid-inner">
 	<!--header start here-->
 	<div class="header-main fixed">
@@ -288,7 +288,7 @@
 												class="joinbtn">Login</button>
 										</h4>
 										<h5>
-											<a href="${path}home">Go Back to Home</a>
+											<a href="${pageContext.request.contextPath}/home">Go Back to Home</a>
 										</h5>
 									</div>
 								</div>
