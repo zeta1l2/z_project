@@ -1,14 +1,26 @@
 package com.service;
 
 import java.lang.reflect.InvocationTargetException;
+import java.security.PrivateKey;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.dao.Dao;
 import com.dao.MongoDb;
+import com.dao.PasswordEncode;
 import com.mongodb.client.model.Filters;
 
 import annotation.maps.ComMap;
@@ -19,6 +31,10 @@ public class ComService {
 
 	@Autowired ComMap cm;
 	@Autowired MongoDb md;
+	@Autowired Dao dao;
+	@Autowired PasswordEncode pe;
+	
+	String avatar_path="D:\\c\\sts-bundle\\ws\\z_project-beta\\src\\main\\webapp\\static\\com\\avatar";
 	
 	public int registerCheck(UserBean ub) {
 		System.out.println(cm.registerCheck(ub));
@@ -64,4 +80,38 @@ public class ComService {
 			cb.setChatTime(md.getTime());
 			md.mongoInsert("chat", "chat", cb);
 		}
+		
+		//회원가입 후 로그인 서비스
+		public void add_user(UserBean ub,HttpSession session,MultipartFile f) throws Exception {
+			//이미지 파일 존재 시 추가 후 bean에 파일 이름 삽입
+			System.out.println("이미지파일 업로딩");
+			if(!f.isEmpty()) {
+			Map<String, String> avatar_map= dao.upload_file(f, avatar_path);
+			ub.setM_avatar(avatar_map.get("fname"));
+			}else {
+			ub.setM_avatar("");
+			}
+			System.out.println("이미지파일 업로딩 종료");
+	        PrivateKey privateKey = (PrivateKey) session.getAttribute(pe.getRsa_web_key());
+	        System.out.println(ub);
+	        // 복호화
+	        ub.setM_id(pe.decryptRsa(privateKey, ub.getM_id()));
+	        ub.setM_pw(pe.decryptRsa(privateKey, ub.getM_pw()));
+	        ub.setM_name(pe.decryptRsa(privateKey, ub.getM_name()));
+	        ub.setM_phone(pe.decryptRsa(privateKey, ub.getM_phone()));
+	        
+	        
+	        // 개인키 삭제
+	        session.removeAttribute(pe.getRsa_web_key());
+	        //암호화 저장
+	        ub.setM_pw(pe.encode(ub.getM_pw()));
+	        System.out.println(ub);
+	        //db push
+	        cm.signupDb(ub);
+	        //로그인 처리
+	        session.setAttribute("userId", ub.getM_id());
+			
+		}
+		
+		
 }

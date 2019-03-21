@@ -6,6 +6,7 @@ import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.RSAPublicKeySpec;
+import java.util.HashMap;
 
 import javax.crypto.Cipher;
 import javax.servlet.http.HttpServletRequest;
@@ -71,7 +72,7 @@ public class PasswordEncode {
     
      // rsa 공개키, 개인키 생성
     
-    public void initRsa(HttpServletRequest request) {
+    public HashMap<String, String> initRsa(HttpServletRequest request) {
         HttpSession session = request.getSession();
  
         KeyPairGenerator generator;
@@ -90,10 +91,13 @@ public class PasswordEncode {
             String publicKeyModulus = publicSpec.getModulus().toString(16);
             String publicKeyExponent = publicSpec.getPublicExponent().toString(16);
  
-            session.setAttribute("RSAModulus", publicKeyModulus); // rsa modulus 를 request 에 추가
-            session.setAttribute("RSAExponent", publicKeyExponent); // rsa exponent 를 request 에 추가
+            HashMap<String,String> map=new HashMap<String,String>();
+            map.put("RSAModulus", publicKeyModulus);
+            map.put("RSAExponent", publicKeyExponent);
+            return map;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 }

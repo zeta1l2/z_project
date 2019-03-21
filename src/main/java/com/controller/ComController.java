@@ -2,6 +2,7 @@ package com.controller;
 
 import java.lang.reflect.InvocationTargetException;
 import java.security.PrivateKey;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dao.PasswordEncode;
 import com.service.ComService;
@@ -30,7 +32,7 @@ import beans.UserBean;
 public class ComController {
 	public static String RSA_INSTANCE="rsa";
 	@Autowired TestMappable testMappable;
-	@Autowired ComMap cm;
+	@Autowired  ComMap cm;
 	@Autowired PasswordEncode pe;
 	@Autowired ComService cs;
 	
@@ -42,21 +44,28 @@ public class ComController {
 		return cs.getChatListByRecent(cb,5);
 	}
 	
-	@RequestMapping(value= {"/log"},method=RequestMethod.POST)
-	public String login(UserBean ub,HttpSession session) throws Exception {
-		 PrivateKey privateKey = (PrivateKey) session.getAttribute(pe.getRsa_web_key());
-	        // 복호화
-	        ub.setUserId(pe.decryptRsa(privateKey, ub.getUserId()));
-	        ub.setUserPw(pe.decryptRsa(privateKey, ub.getUserPw()));
-	        // 개인키 삭제
-	        session.removeAttribute(pe.getRsa_web_key());
-	        //db push
-	        if(pe.match(ub.getUserPw(),(String) cm.login(ub).get("USERPW"))) {
-	        	session.setAttribute("userId", ub.getUserId());	        	
-	        }
-	        //로그인 처리
-		return "home";
+	//rsa암호화 키 발급
+	@RequestMapping(value = {"/log"}, method = RequestMethod.GET)
+	public @ResponseBody HashMap<String, String> module(HttpServletRequest request){
+		return pe.initRsa(request);
 	}
+	
+	@RequestMapping(value= {"/log"},method=RequestMethod.POST)
+	public @ResponseBody int login(UserBean ub,HttpSession session) throws Exception {
+		 PrivateKey privateKey = (PrivateKey) session.getAttribute(pe.getRsa_web_key());
+		 System.out.println(ub);
+		 	// 복호화
+	        ub.setM_id(pe.decryptRsa(privateKey, ub.getM_id()));
+	        ub.setM_pw(pe.decryptRsa(privateKey, ub.getM_pw()));
+	        
+	        //db push
+	        if(pe.match(ub.getM_pw(),(String) cm.login(ub).get("M_PW"))) {
+	        	session.setAttribute("userId", ub.getM_id());
+	        	return 1;
+	        }
+	    return 0;
+	}
+	
 	@RequestMapping(value= {"/logout"},method=RequestMethod.GET)
 	public String logout(HttpSession session) {
 		session.invalidate();
@@ -75,37 +84,17 @@ public class ComController {
 		cs.sendChat(cb);
 	}
 	
+	//회원가입
 	@RequestMapping(value = {"/registerCheck"}, method = RequestMethod.POST)
 	public @ResponseBody int registerCheck(UserBean ub) {
 		return cm.registerCheck(ub);
 	}
-	//회원가입폼 이동
-	@RequestMapping(value = {"/module"}, method = RequestMethod.GET)
-	public @ResponseBody void module(HttpServletRequest request){
-		pe.initRsa(request);
-	}
-	//회원가입
 	@RequestMapping(value = {"/signup"}, method = RequestMethod.POST)
-	public String signup(UserBean ub,HttpSession session) throws Exception {
-		System.out.println(ub);
-        PrivateKey privateKey = (PrivateKey) session.getAttribute(pe.getRsa_web_key());
-        
-        // 복호화
-        ub.setUserId(pe.decryptRsa(privateKey, ub.getUserId()));
-        ub.setUserPw(pe.decryptRsa(privateKey, ub.getUserPw()));
-        System.out.println(ub);
-        // 개인키 삭제
-        session.removeAttribute(pe.getRsa_web_key());
-        session.removeAttribute("RSAModulus");
-        session.removeAttribute("RSAExponent");
-        //암호화 저장
-        ub.setUserPw(pe.encode(ub.getUserPw()));
-        System.out.println(ub);
-        //db push
-        cm.signupDb(ub);
-        //로그인 처리
-        session.setAttribute("userId", ub.getUserId());
- 
+	public String signup(UserBean ub,HttpSession session,MultipartFile avatar_img) throws Exception {
+		System.out.println("컨트롤러 도착");
+		cs.add_user(ub, session, avatar_img);
+		System.out.println("컨트롤러 종료");
+		
 		return "home";
 	}
 	/*테스팅*/
@@ -114,13 +103,4 @@ public class ComController {
 		return "home";
 	}
 	
-	@RequestMapping(value = { "/k-drive"}, method = RequestMethod.GET)
-	public String k_drive(ModelMap m) {
-		return "k-drive";
-	}
-	
-	@RequestMapping(value = { "/c-test"}, method = RequestMethod.GET)
-	public String c_test(ModelMap m) {
-		return "c-test";
-	}	
 }

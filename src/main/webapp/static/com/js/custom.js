@@ -1,60 +1,63 @@
 var idCheck = 0;
 var pwdCheck = 0;
-
 function checkId(){
 	idCheck=0;
-	var userid=document.join.userId.value;
+	var userid=document.join.m_id.value;
+	
 	$.ajax({
 		method : "post",
     	url : "/z_project-beta/registerCheck",
 		data : {
-			userId : userid
+			m_id : userid,
 		},
 		success : function(data){
 			if(userid==""&& data=='0'){
 				$(".signupbtn").prop("disabled",true);
 				$(".signupbtn").css("background-color","#aaaaaa");
-				$("#userId").css("background-color","#ffcece");
+				$("#m_id").css("background-color","#ffcece");
+				$("#id_check").empty();
+				 $("#id_check").append("아이디를 입력해주세요.")
 				idCheck = 1;
 			}else if (data =='0'){
-				  $("#userId").css("background-color", "#B0F6AC");
+				  $("#m_id").css("background-color", "#B0F6AC");
                   idCheck = 1;
+                  $("#id_check").empty();
                   if(idCheck==1 && pwdCheck == 1) {
                       $(".signupbtn").prop("disabled", false);
                       $(".signupbtn").css("background-color", "#4CAF50");
-                      signupCheck();
                   }
               }else if (data == '1') {
                   $(".signupbtn").prop("disabled", true);
                   $(".signupbtn").css("background-color", "#aaaaaa");
-                  $("#userId").css("background-color", "#FFCECE");
+                  $("#m_id").css("background-color", "#FFCECE");
                   idCheck = 0;
+                  $("#id_check").empty();
+                  $("#id_check").append("이미 아이디가 존재합니다.")
               }
-		}
+		},
+		
 	})
 }
 //재입력 비밀번호 체크하여 가입버튼 비활성화 또는 맞지않음을 알림.
 function checkPw() {
-    var inputed = $('#userPw').val();
-    var reinputed = $('#userPw2').val();
+    var inputed = $('#m_pw').val();
+    var reinputed = $('#m_pw2').val();
     if(reinputed=="" && (inputed != reinputed || inputed == reinputed)){
         $(".signupbtn").prop("disabled", true);
         $(".signupbtn").css("background-color", "#aaaaaa");
-        $("#userPw2").css("background-color", "#FFCECE");
     }
     else if (inputed == reinputed) {
-        $("#userPw2").css("background-color", "#B0F6AC");
+        $("#m_pw2").css("background-color", "#B0F6AC");
         pwdCheck = 1;
         if(idCheck==1 && pwdCheck == 1) {
             $(".signupbtn").prop("disabled", false);
             $(".signupbtn").css("background-color", "#4CAF50");
-            signupCheck();
         }
     } else if (inputed != reinputed) {
         pwdCheck = 0;
         $(".signupbtn").prop("disabled", true);
         $(".signupbtn").css("background-color", "#aaaaaa");
-        $("#userPw2").css("background-color", "#FFCECE");
+        $("#m_pw2").css("background-color", "#FFCECE");
 
     }
 }
@@ -62,30 +65,54 @@ function checkPw() {
 function getmodulus(){
 	$.ajax({
 		type: "get",
-		url: "/z_project-beta/module",
-		dataType: 'json',
+		url: "/z_project-beta/log",
+		success: function(data){
+			$('#RSAModulus').val(data['RSAModulus']);
+			$('#RSAExponent').val(data['RSAExponent']);
+		},
 	})
 }
+
 //form 전송 암호화
 function signup(){
 	var rsa=new RSAKey();
 	var rsam=document.join.RSAModulus.value;
 	var rase=document.join.RSAExponent.value;
-	
 	rsa.setPublic (rsam, rase);
-	var userid=document.join.userId.value;
-	var userpw=document.join.userPw.value;
-
-	var id=rsa.encrypt(userid);
-	var pw=rsa.encrypt(userpw)
-	alert(userid);
+	var userid=document.join.m_id.value;
+	var userpw=document.join.m_pw.value;
+	var username=document.join.m_name.value;
+	var userphone=document.join.m_phone.value;
+	
+	$('#m_id').val(rsa.encrypt(userid));
+	$('#m_pw').val(rsa.encrypt(userpw));
+	$('#m_pw2').val('');	
+	$('#m_name').val(rsa.encrypt(username));
+	$('#m_phone').val(rsa.encrypt(userphone));
+}
+function a_log(){
+	getmodulus();
+	var rsa=new RSAKey();
+	var rsam=document.join.RSAModulus.value;
+	var rase=document.join.RSAExponent.value;
+	rsa.setPublic (rsam, rase);
+	var userid=document.login.m_id.value;
+	var userpw=document.login.m_pw.value;
+	
 	$.ajax({
 		type:"post",
-		url: "/z_project-beta/signup",
-		 async : true,
-		data: {
-			userId: id,
-			userPw: pw,
+		url:"/z_project-beta/log",
+		data:{
+			m_id: rsa.encrypt(userid),
+			m_pw: rsa.encrypt(userpw),
+		},
+		success: function(data){
+			if(data=='1'){
+				location.href="/z_project-beta/home";
+			}else{
+				$('#login_check').empty();
+				$('#login_check').append("아이디 또는 비밀번호가 일치하지 않습니다.")
+			}
 		}
 	})
 }
@@ -117,6 +144,7 @@ function chatListFunction(type){
 		success: function(data){
 			
 			if(data=="")return;
+			$('#chatList').empty();
 			for(var i=0;i<data.length;i++){
 				addChat(data[i]['toId'],data[i]['chatContent'],data[i]['chatTime'])
 			}
@@ -124,6 +152,7 @@ function chatListFunction(type){
 		}
 	});
 }
+
 function addChat(chatName, chatContent, chatTime){
 	$('#chatList').append('<div class="row"'+
 			'<div class="col-lg-12">'+

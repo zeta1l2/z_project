@@ -1,10 +1,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="annotation.maps.ComMap">
     <select id="registerCheck" parameterType="beans.UserBean" resultType="Integer">
-    SELECT NVL(COUNT(*),0)
-    FROM USERCHAT WHERE userId=#{userId}
+    SELECT NVL(COUNT(*),0) FROM MEMBER WHERE M_ID=#{m_id}
     </select>
+    
     <insert id="signupDb" parameterType="beans.UserBean" >
-    INSERT INTO USERCHAT VALUES (#{userId}, #{userPw})
+    {CALL P_SIGNUP(#{m_id},#{m_pw},#{m_name},#{m_phone},#{m_avatar})}
     </insert>
+    
 </mapper>

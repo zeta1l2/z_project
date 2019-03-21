@@ -10,7 +10,6 @@ public interface ComMap {
 	public int registerCheck(UserBean ub);
 	public void signupDb(UserBean ub);
 	
-	
-	@Select("SELECT * FROM USERCHAT WHERE USERID= #{userId}")
+	@Select("SELECT * FROM MEMBER WHERE M_ID= #{m_id}")
 	public HashMap<String,Object> login(UserBean ub);
 }

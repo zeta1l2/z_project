@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
-<c:url var="path" value="/"/>
+<c:url var="path" value="/" />
 <link rel="stylesheet" href="<c:url value='/css/login_form.css'/>">
 <script src="${path}js/login_form.js"></script>
 <script src="${path}js/rsa.js"></script>
@@ -201,30 +201,34 @@
 					<c:when test="${empty userId}">
 						<input type="button" class="btn btn-success btn mb-2 mr-sm-2"
 							id="login_btn"
-							onclick="document.getElementById('login').style.display='block'"
+							onclick="getmodulus(), document.getElementById('login').style.display='block'"
 							value="Login" style="margin: 0px;" />
 						<!-- 로그인 화면 -->
 						<div class="login-page modal" id="login">
 							<div class="login-main animate">
 								<div class="login-head imgcontainer">
-								<span onclick="document.getElementById('login').style.display='none'" class="close" title="Close Modal">&times;</span>
+									<span
+										onclick="document.getElementById('login').style.display='none'"
+										class="close" title="Close Modal">&times;</span>
 									<h1>Login</h1>
 								</div>
 								<div class="login-block">
-									<form>
-										<input type="text" name="email" placeholder="ID"
-											required="" class="form-control">
-										<input type="password" name="password"
-											class="lock form-control" placeholder="Password">
+									<form name="login" method="post">
+										<input type="text" name="m_id" placeholder="ID" required class="form-control"> 
+										<input type="password" name="m_pw" class="lock form-control" required placeholder="Password">
 										<div class="forgot-top-grids">
 											<div class="forgot">
 												<a href="#">Forgot password?</a>
 											</div>
 											<div class="clearfix"></div>
 										</div>
-										<input type="submit" name="Sign In" value="Login">
+										<div id="login_check" style="color: red"></div>
+										<hr>
+										<button type="button" onclick="a_log()">Login</button>
 										<h3>
-											<button type="button" onclick="getmodulus(), document.getElementById('login').style.display='none',document.getElementById('singup').style.display='block'" class="joinbtn">SignUp</button>
+											<button type="button"
+												onclick="document.getElementById('login').style.display='none',document.getElementById('singup').style.display='block'"
+												class="joinbtn">SignUp</button>
 										</h3>
 										<h2>or login with</h2>
 										<div class="login-icons">
@@ -245,25 +249,43 @@
 							</div>
 						</div>
 						<!-- 회원가입 창 -->
-						
+
 						<div class="signup-page-main modal" id="singup">
 							<div class="signup-main">
 								<div class="signup-head">
 									<h1>Sign Up</h1>
 								</div>
 								<div class="signup-block">
-									<form name="join" onsubmit="signup()">
-										<input type="hidden" id="RSAModulus" value="${RSAModulus}"/>
-        								<input type="hidden" id="RSAExponent" value="${RSAExponent}"/>
-										<input class="form-control id" type="text" id="userId" name="userId" maxlength="20" placeholder="아이디를 입력하세요."  onfocusout="checkId()">
-										<input onkeyup="checkPw()" class="form-control" id="userPw" type="password" name="userPw" maxlength="20" placeholder="비밀번호를 입력하세요.">
-										<input onkeyup="checkPw()" class="form-control" id="userPw2" type="password" name="userPw2" maxlength="20" placeholder="비밀번호확인을 입력하세요.">
-										<input type="submit" name="Sign In" value="Sign up">
+									<form name="join" action="${path }signup" onsubmit="signup()"
+										enctype="multipart/form-data" method="post">
+										<input type="hidden" id="RSAModulus" value="${RSAModulus}" />
+										<input type="hidden" id="RSAExponent" value="${RSAExponent}" />
+										<input class="form-control" type="text" id="m_id" name="m_id"
+											maxlength="20" placeholder="아이디를 입력하세요."
+											onfocusout="checkId()" required="required"> <input
+											onkeyup="checkPw()" class="form-control" id="m_pw"
+											type="password" name="m_pw" maxlength="20"
+											placeholder="비밀번호를 입력하세요." required="required"> <input
+											onkeyup="checkPw()" class="form-control" id="m_pw2"
+											type="password" name="m_pw2" maxlength="20"
+											placeholder="비밀번호확인을 입력하세요." required="required"> <input
+											class="form-control" type="text" id="m_name" name="m_name"
+											maxlength="20" placeholder="이름을 입력해주세요" required="required">
+										<input class="form-control" type="text" id="m_phone"
+											name="m_phone" maxlength="20" placeholder="연락처를 입력해주세요"
+											required="required"> <input type="file"
+											id="avatar_img" name="avatar_img">
+										<hr>
+										<div id="id_check" style="color: red"></div>
+										<input type="submit" class="signupbtn" name="Sign In"
+											disabled="disabled" value="Sign up" style="background-color:#aaaaaa">
 									</form>
 									<div class="sign-down">
 										<h4>
 											Already have an account?
-											<button type="button" onclick="document.getElementById('login').style.display='block',document.getElementById('singup').style.display='none'" class="joinbtn">Login</button>
+											<button type="button"
+												onclick="document.getElementById('login').style.display='block',document.getElementById('singup').style.display='none'"
+												class="joinbtn">Login</button>
 										</h4>
 										<h5>
 											<a href="${path}home">Go Back to Home</a>
@@ -274,7 +296,28 @@
 						</div>
 					</c:when>
 					<c:otherwise>
-						<tiles:insertAttribute name="logout" />
+						<ul>
+							<li class="dropdown profile_details_drop"><a href="#"
+								class="dropdown-toggle" data-toggle="dropdown"
+								aria-expanded="false">
+									<div class="profile_img">
+										<span class="prfil-img"><img src="images/p1.png" alt="">
+										</span>
+										<div class="user-name">
+											<p>Malorum</p>
+											<span>Administrator</span>
+										</div>
+										<i class="fa fa-angle-down lnr"></i> <i
+											class="fa fa-angle-up lnr"></i>
+										<div class="clearfix"></div>
+									</div>
+							</a>
+								<ul class="dropdown-menu drp-mnu">
+									<li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
+									<li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
+									<li><a href="${path }logout"><i class="fa fa-sign-out"></i> Logout</a></li>
+								</ul></li>
+						</ul>
 					</c:otherwise>
 				</c:choose>
 
