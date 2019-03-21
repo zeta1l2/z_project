@@ -31,6 +31,7 @@
 
 <script>
 $(document).ready(function() {
+	var numId = 8;
 	var treeview = $("#treeview-left").kendoTreeView({
 	    dragAndDrop: true,
 	    select: onSelect,
@@ -57,8 +58,8 @@ $(document).ready(function() {
 		treeview.select(barElement);
 				
 		treeview.append({
-			text: $("#appendNodeText").val()			
-		}, barElement);
+			text: $("#appendNodeText").val(), id: ++numId 			
+		}, barElement);		
 	});
 
 	function onSelect(e) {	    
@@ -74,6 +75,7 @@ $(document).ready(function() {
 		if (e.statusClass.indexOf("insert") >= 0) {
 		    // deny the operation
 		    e.setStatusClass("k-i-cancel");
+		    treeview.expand(e.dropTarget);
 		}
 	}
 	
