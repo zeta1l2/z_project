@@ -32,9 +32,9 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 	static HikariDataSource ds;
 	static SqlSessionFactoryBean sqlSessionFactory;
 	static {
-		config.setJdbcUrl("jdbc:oracle:thin:@10.0.0.38:1521:orcl");
+		config.setJdbcUrl("jdbc:oracle:thin:@localhost:1521:orcl");
 		config.setDriverClassName("oracle.jdbc.OracleDriver");
-		config.setUsername("scott1");
+		config.setUsername("scott");
 		config.setPassword("Tiger07#");
 		config.addDataSourceProperty("cachePrepStmts", "true");
 		config.addDataSourceProperty("prepStmtCacheSize", "250");

@@ -46,6 +46,7 @@
 			            <li id="menu-academico-boletim"><a href="price.html">Price</a></li>
 		             </ul>
 		         </li>
+		         <li><a href="k-drive"><i class="fa fa-inbox"></i><span>K-Drive</span></a></li>
 		      </ul>
 		    </div>
 	 </div>

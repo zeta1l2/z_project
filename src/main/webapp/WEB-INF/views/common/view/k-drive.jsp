@@ -79,19 +79,24 @@ $(document).ready(function() {
 		}
 	}
 	
-	function onDrop(e) {
-		if(e.valid) {
-			if (kendo.keys.CTRL == e.keyCode) {
-                console.log("ctrl key press");
-            }
+	function onDrop(e) {		
+		if(e.valid) {			
 			var start = treeview.dataItem(e.sourceNode);
 			var end = treeview.dataItem(e.dropTarget);
+			
 			console.log("Select : " + start.id + "  Target : " + end.id);
+			var barDataItem = treeview.dataSource.get(end.id);
+			var barElement = treeview.findByUid(barDataItem.uid);			
+			
+			treeview.append({
+				text: this.text(e.sourceNode), id: ++numId 			
+			}, barElement);
+			e.setValid(false);
 		}
 	}
 	
 	function onDragEnd(e) {
-		console.log("Finished dragging end");		
+				
 	}	
 
 	$("#treeview-right").kendoTreeView({	    	    
