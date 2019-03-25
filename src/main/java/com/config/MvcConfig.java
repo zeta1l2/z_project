@@ -1,5 +1,6 @@
 package com.config;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -32,21 +34,27 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 	static HikariDataSource ds;
 	static SqlSessionFactoryBean sqlSessionFactory;
 	static {
-		config.setJdbcUrl("jdbc:oracle:thin:@localhost:1521:orcl");
+		config.setJdbcUrl("jdbc:oracle:thin:@10.0.0.38:1521:orcl");
 		config.setDriverClassName("oracle.jdbc.OracleDriver");
-		config.setUsername("scott");
+		config.setUsername("scott1");
 		config.setPassword("Tiger07#");
 		config.addDataSourceProperty("cachePrepStmts", "true");
 		config.addDataSourceProperty("prepStmtCacheSize", "250");
 		config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
 		ds = new HikariDataSource(config);
-
 	}
 	@Bean(name = "con")
 	public Connection connection() throws SQLException {
 		return ds.getConnection();
 	}
+	@Bean(name="multipartResolver") 
+    public CommonsMultipartResolver getResolver() throws IOException{
+        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
 
+        resolver.setMaxUploadSize(5242880);//5MB
+         
+        return resolver;
+    }
 	@Bean(name = "sqlsession")
 	public SqlSessionFactory sqlSessionFactory() throws Exception {
 		sqlSessionFactory = new SqlSessionFactoryBean();

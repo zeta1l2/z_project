@@ -201,7 +201,7 @@
 					<c:when test="${empty userId}">
 						<input type="button" class="btn btn-success btn mb-2 mr-sm-2"
 							id="login_btn"
-							onclick="getmodulus(), document.getElementById('login').style.display='block'"
+							onclick="document.getElementById('login').style.display='block'"
 							value="Login" style="margin: 0px;" />
 						<!-- 로그인 화면 -->
 						<div class="login-page modal" id="login">
@@ -213,7 +213,7 @@
 									<h1>Login</h1>
 								</div>
 								<div class="login-block">
-									<form name="login" method="post">
+									<form name="login">
 										<input type="text" name="m_id" placeholder="ID" required class="form-control"> 
 										<input type="password" name="m_pw" class="lock form-control" required placeholder="Password">
 										<div class="forgot-top-grids">
@@ -227,7 +227,7 @@
 										<button type="button" onclick="a_log()">Login</button>
 										<h3>
 											<button type="button"
-												onclick="document.getElementById('login').style.display='none',document.getElementById('singup').style.display='block'"
+												onclick="getmodulus(), document.getElementById('login').style.display='none',document.getElementById('singup').style.display='block'"
 												class="joinbtn">SignUp</button>
 										</h3>
 										<h2>or login with</h2>
@@ -256,7 +256,7 @@
 									<h1>Sign Up</h1>
 								</div>
 								<div class="signup-block">
-									<form name="join" action="${path }signup" onsubmit="signup()"
+									<form name="join" action="${pageContext.request.contextPath}/signup" onsubmit="signup()"
 										enctype="multipart/form-data" method="post">
 										<input type="hidden" id="RSAModulus" value="${RSAModulus}" />
 										<input type="hidden" id="RSAExponent" value="${RSAExponent}" />

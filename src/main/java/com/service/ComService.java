@@ -34,7 +34,7 @@ public class ComService {
 	@Autowired Dao dao;
 	@Autowired PasswordEncode pe;
 	
-	String avatar_path="D:\\c\\sts-bundle\\ws\\z_project-beta\\src\\main\\webapp\\static\\com\\avatar";
+	String avatar_path="C:\\Users\\HU221\\git\\z_project-beta\\src\\main\\webapp\\static\\com\\images\\avatar";
 	
 	public int registerCheck(UserBean ub) {
 		System.out.println(cm.registerCheck(ub));

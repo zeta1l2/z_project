@@ -59,10 +59,15 @@ public class ComController {
 	        ub.setM_pw(pe.decryptRsa(privateKey, ub.getM_pw()));
 	        
 	        //db push
+	        try {
 	        if(pe.match(ub.getM_pw(),(String) cm.login(ub).get("M_PW"))) {
 	        	session.setAttribute("userId", ub.getM_id());
 	        	return 1;
 	        }
+	        }catch(NullPointerException e) {
+	        	return 0;
+	        }
+	        
 	    return 0;
 	}
 	

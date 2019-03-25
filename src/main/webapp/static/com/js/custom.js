@@ -3,7 +3,7 @@ var pwdCheck = 0;
 function checkId(){
 	idCheck=0;
 	var userid=document.join.m_id.value;
-	
+
 	$.ajax({
 		method : "post",
     	url : "/z_project-beta/registerCheck",
@@ -35,7 +35,7 @@ function checkId(){
                   $("#id_check").append("이미 아이디가 존재합니다.")
               }
 		},
-		
+
 	})
 }
 //재입력 비밀번호 체크하여 가입버튼 비활성화 또는 맞지않음을 알림.
@@ -69,6 +69,7 @@ function getmodulus(){
 		success: function(data){
 			$('#RSAModulus').val(data['RSAModulus']);
 			$('#RSAExponent').val(data['RSAExponent']);
+
 		},
 	})
 }
@@ -83,37 +84,48 @@ function signup(){
 	var userpw=document.join.m_pw.value;
 	var username=document.join.m_name.value;
 	var userphone=document.join.m_phone.value;
-	
+
 	$('#m_id').val(rsa.encrypt(userid));
 	$('#m_pw').val(rsa.encrypt(userpw));
-	$('#m_pw2').val('');	
+	$('#m_pw2').val('');
 	$('#m_name').val(rsa.encrypt(username));
 	$('#m_phone').val(rsa.encrypt(userphone));
 }
 function a_log(){
-	getmodulus();
-	var rsa=new RSAKey();
-	var rsam=document.join.RSAModulus.value;
-	var rase=document.join.RSAExponent.value;
-	rsa.setPublic (rsam, rase);
-	var userid=document.login.m_id.value;
-	var userpw=document.login.m_pw.value;
-	
 	$.ajax({
-		type:"post",
-		url:"/z_project-beta/log",
-		data:{
-			m_id: rsa.encrypt(userid),
-			m_pw: rsa.encrypt(userpw),
-		},
+		type: "get",
+		url: "/z_project-beta/log",
 		success: function(data){
-			if(data=='1'){
-				location.href="/z_project-beta/home";
-			}else{
-				$('#login_check').empty();
-				$('#login_check').append("아이디 또는 비밀번호가 일치하지 않습니다.")
+			$('#RSAModulus').val(data['RSAModulus']);
+			$('#RSAExponent').val(data['RSAExponent']);
+			var rsa=new RSAKey();
+			rsa.setPublic (data['RSAModulus'], data['RSAExponent']);
+			var userid=document.login.m_id.value;
+			var userpw=document.login.m_pw.value;
+			//로그인 무결성체크
+			if(userid==" "){
+				('#login_check').empty();
+						$('#login_check').append("아이디를 입력해주세요.")
+				return false;
 			}
-		}
+			//로그인시 평문데이터 암호화 전송
+			$.ajax({
+				type:"post",
+				url:"/z_project-beta/log",
+				data:{
+					m_id: rsa.encrypt(userid),
+					m_pw: rsa.encrypt(userpw),
+				},
+				success: function(data){
+					if(data=='1'){
+						location.href="/z_project-beta/home";
+					}else{
+						$('#login_check').empty();
+						$('#login_check').append("아이디 또는 비밀번호가 일치하지 않습니다.")
+					}
+				}
+			})
+		},
 	})
 }
 
@@ -142,7 +154,7 @@ function chatListFunction(type){
 			toId:$('#toId').val(),
 		},
 		success: function(data){
-			
+
 			if(data=="")return;
 			$('#chatList').empty();
 			for(var i=0;i<data.length;i++){
