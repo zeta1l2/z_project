@@ -91,6 +91,15 @@ function signup(){
 	$('#m_name').val(rsa.encrypt(username));
 	$('#m_phone').val(rsa.encrypt(userphone));
 }
+function logout(){
+	$.ajax({
+		type: "get",
+		url: "/z_project-beta/logout",
+		success: function(){
+			window.location.reload();
+		}
+	})
+}
 function a_log(){
 	$.ajax({
 		type: "get",
@@ -103,9 +112,13 @@ function a_log(){
 			var userid=document.login.m_id.value;
 			var userpw=document.login.m_pw.value;
 			//로그인 무결성체크
-			if(userid==" "){
-				('#login_check').empty();
-						$('#login_check').append("아이디를 입력해주세요.")
+			if(userid.length == 0){
+				$('#login_check').empty();
+				$('#login_check').append("아이디를 입력해주세요.")
+				return false;
+			}else if(userpw.length == 0){
+				$('#login_check').empty();
+				$('#login_check').append("비밀번호를 입력해주세요.")
 				return false;
 			}
 			//로그인시 평문데이터 암호화 전송
@@ -193,4 +206,16 @@ function getInfiniteChat(){
 	setInterval(function(){
 		chatListFunction(lastId);
 	},3000);
+}
+
+function find_friend(){
+	if($('#ff').prop('hidden')){
+	$('#ff').removeAttr('hidden');
+	}else{
+		$('#ff').attr('hidden','hidden');	
+	}
+}
+function user_list(){
+	var search=$(search_user).val();
+	
 }

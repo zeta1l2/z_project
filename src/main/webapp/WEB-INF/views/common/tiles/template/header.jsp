@@ -2,13 +2,13 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
-<c:url var="path" value="/" />
-<link rel="stylesheet" href="<c:url value='/css/login_form.css'/>">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/login_form.css">
 <script src="${pageContext.request.contextPath}/js/login_form.js"></script>
 <script src="${pageContext.request.contextPath}/js/rsa.js"></script>
 <script src="${pageContext.request.contextPath}/js/jsbn.js"></script>
 <script src="${pageContext.request.contextPath}/js/prng4.js"></script>
 <script src="${pageContext.request.contextPath}/js/rng.js"></script>
+
 <div class="mother-grid-inner">
 	<!--header start here-->
 	<div class="header-main fixed">
@@ -29,6 +29,7 @@
 			<div class="clearfix"></div>
 		</div>
 		<div class="header-right">
+		<c:if test="${not empty userId }">
 			<div class="profile_details_left">
 				<!--notifications of menu start -->
 				<ul class="nofitications-dropdown">
@@ -50,6 +51,7 @@
 										<p>Lorem ipsum dolor</p>
 										<p>
 											<span>1 hour ago</span>
+											
 										</p>
 									</div>
 									<div class="clearfix"></div>
@@ -80,7 +82,7 @@
 							</a></li>
 							<li>
 								<div class="notification_bottom">
-									<a href="#">See all messages</a>
+									<a href="${pageContext.request.contextPath}/chat">See all messages</a>
 								</div>
 							</li>
 						</ul></li>
@@ -195,7 +197,9 @@
 				</ul>
 				<div class="clearfix"></div>
 			</div>
+			</c:if>
 			<!--notification menu end -->
+			
 			<div class="profile_details">
 				<c:choose>
 					<c:when test="${empty userId}">
@@ -243,7 +247,7 @@
 										</div>
 									</form>
 									<h5>
-										<a href="${path }home">Go Back to Home</a>
+										<a href="${pageContext.request.contextPath}/home">Go Back to Home</a>
 									</h5>
 								</div>
 							</div>
@@ -297,30 +301,29 @@
 					</c:when>
 					<c:otherwise>
 						<ul>
-							<li class="dropdown profile_details_drop"><a href="#"
-								class="dropdown-toggle" data-toggle="dropdown"
+							<li class="dropdown profile_details_drop">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"
 								aria-expanded="false">
 									<div class="profile_img">
-										<span class="prfil-img"><img src="images/p1.png" alt="">
+										<span class="prfil-img" ><img style="width:50px; height:50px;" src="${pageContext.request.contextPath}/images/avatar/${userAvatar}">
 										</span>
 										<div class="user-name">
-											<p>Malorum</p>
-											<span>Administrator</span>
+											<p>${userId}</p>
+											<span>${userGrade}</span>
 										</div>
-										<i class="fa fa-angle-down lnr"></i> <i
-											class="fa fa-angle-up lnr"></i>
+										<i class="fa fa-angle-down lnr"></i> 
+										<i class="fa fa-angle-up lnr"></i>
 										<div class="clearfix"></div>
 									</div>
 							</a>
 								<ul class="dropdown-menu drp-mnu">
 									<li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
 									<li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
-									<li><a href="${path }logout"><i class="fa fa-sign-out"></i> Logout</a></li>
+									<li><a href="#" onclick="logout()"><i class="fa fa-sign-out"></i> Logout</a></li>
 								</ul></li>
 						</ul>
 					</c:otherwise>
 				</c:choose>
-
 			</div>
 			<div class="clearfix"></div>
 		</div>

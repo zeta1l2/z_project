@@ -4,7 +4,7 @@ public class UserBean {
 
 	private Integer m_num;
 	private String m_id;
-	private Integer m_grade;
+	private String m_grade;
 	private String m_pw;
 	private String m_name;
 	private String m_phone;
@@ -26,11 +26,11 @@ public class UserBean {
 		this.m_id = m_id;
 	}
 
-	public Integer getM_grade() {
+	public String getM_grade() {
 		return m_grade;
 	}
 
-	public void setM_grade(Integer m_grade) {
+	public void setM_grade(String m_grade) {
 		this.m_grade = m_grade;
 	}
 

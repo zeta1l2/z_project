@@ -12,29 +12,27 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="keywords" content="Shoppy Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
 Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design">
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-<script src="${pageContext.request.contextPath}//js/custom.js"></script>
+<script src="${pageContext.request.contextPath}/js/custom.js"></script>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all">
+<link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet" type="text/css" media="all">
 <!-- Custom Theme files -->
-<link href="css/style.css" rel="stylesheet" type="text/css" media="all">
+<link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet" type="text/css" media="all">
 <!--js-->
-<script src="js/jquery-2.1.1.min.js"></script> 
+
 <!--icons-css-->
-<link href="css/font-awesome.css" rel="stylesheet"> 
+<link href="${pageContext.request.contextPath}/css/font-awesome.css" rel="stylesheet"> 
 <!--Google Fonts-->
 <link href="//fonts.googleapis.com/css?family=Carrois+Gothic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=Work+Sans:400,500,600" rel="stylesheet" type="text/css">
 <!--//skycons-icons-->
 <link type="text/css" rel="stylesheet" charset="UTF-8" href="https://translate.googleapis.com/translate_static/css/translateelement.css"></head>
-
-<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 <!--kendo ui-->
-<link href="css/kendo.common.min.css" rel="stylesheet">
-<link href="css/kendo.default.min.css" rel="stylesheet">
-<link href="css/examples-offline.css" rel="stylesheet">
-<script	src="js/kendo.all.min.js"></script>
+<link href="${pageContext.request.contextPath}/css/kendo.common.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/kendo.default.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/examples-offline.css" rel="stylesheet">
+<script	src="${pageContext.request.contextPath}/js/kendo.all.min.js"></script>
 <body>
 	
 	<div class="page-container">

@@ -12,7 +12,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -60,8 +59,11 @@ public class ComController {
 	        
 	        //db push
 	        try {
-	        if(pe.match(ub.getM_pw(),(String) cm.login(ub).get("M_PW"))) {
-	        	session.setAttribute("userId", ub.getM_id());
+	        if(pe.match(ub.getM_pw(),(String) cm.login(ub).getM_pw())) {
+	        	//ub에 회원정보 담기
+	        	ub=cm.login(ub);
+	        	cs.login_session(session, ub);
+	        	System.out.println(ub);
 	        	return 1;
 	        }
 	        }catch(NullPointerException e) {
@@ -72,13 +74,11 @@ public class ComController {
 	}
 	
 	@RequestMapping(value= {"/logout"},method=RequestMethod.GET)
-	public String logout(HttpSession session) {
+	public @ResponseBody void logout(HttpSession session) {
 		session.invalidate();
-		return "home";
 	}
-	@RequestMapping(value = {"/chat/{toId}"}, method = RequestMethod.GET)
-	public String chatForm(@PathVariable String toId,HttpServletRequest request) {
-		request.setAttribute("toId", toId);
+	@RequestMapping(value = {"/chat"}, method = RequestMethod.GET)
+	public String chatForm() {
 		return "chatForm";
 	}
 	

@@ -109,8 +109,14 @@ public class ComService {
 	        //db push
 	        cm.signupDb(ub);
 	        //로그인 처리
-	        session.setAttribute("userId", ub.getM_id());
+	        login_session(session,ub);
 			
+		}
+		//로그인 처리 메서드
+		public void login_session(HttpSession session,UserBean ub) {
+			session.setAttribute("userId", ub.getM_id());
+			session.setAttribute("userGrade", ub.getM_grade());
+			session.setAttribute("userAvatar", ub.getM_avatar());
 		}
 		
 		
