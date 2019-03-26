@@ -17,26 +17,14 @@ import org.springframework.web.multipart.MultipartFile;
 @Component
 public class Dao {
 		// 첨부 파일 추가
-		public Map<String, String> upload_file(MultipartFile f,String path) {
-			//정보출력
-			System.out.printf("파일이름 : %s\n",f.getOriginalFilename());
-			// 초기
-			UUID uid=UUID.randomUUID(); //랜덤아이디 생성
-			String oname=f.getOriginalFilename();
-			String fname=uid.toString() + "_" + oname; //유일한이름
-			System.out.printf("fname : %s\n",fname);
-			//리턴 맵
-			Map<String,String> finfos= new HashMap<String, String>();
-				finfos.put("oname",oname);
-				finfos.put("fname",fname);
+		public void upload_file(String fname,MultipartFile f,String path) {
 			//파일처리
+			fname+=".jpg";
 			File file=new File(path, fname);
 			try {
 				FileCopyUtils.copy(f.getBytes(), file);
-				return finfos;
 			} catch (Exception e) {
 				System.out.println("첨부파일 추가 예외 :"+e.getMessage());
-				return null;
 			}
 		}
 		//첨부 파일 삭제

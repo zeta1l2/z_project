@@ -1,0 +1,9 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="annotation.maps.DongjeMap">
+    
+    <select id="userList" parameterType="beans.UserBean" resultType="map">
+    SELECT m_id, m_name FROM MEMBER WHERE M_ID like '%' || #{m_id} || '%' 
+    ORDER BY m_id
+    </select>
+    
+</mapper>

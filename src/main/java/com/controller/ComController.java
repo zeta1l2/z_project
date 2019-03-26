@@ -1,10 +1,7 @@
 package com.controller;
 
-import java.lang.reflect.InvocationTargetException;
 import java.security.PrivateKey;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -22,7 +19,6 @@ import com.service.ComService;
 
 import annotation.maps.ComMap;
 import annotation.maps.TestMappable;
-import beans.ChatBean;
 import beans.UserBean;
 
 
@@ -36,19 +32,33 @@ public class ComController {
 	@Autowired ComService cs;
 	
 	/*테스팅*/
-	
-	@RequestMapping(value= {"/chatlist"},method=RequestMethod.POST)
-	public @ResponseBody List<Map<String, Object>> getChatList(ChatBean cb,HttpSession session){
-		cb.setFromId((String) session.getAttribute("userId"));
-		return cs.getChatListByRecent(cb,5);
+
+	//회원가입
+	@RequestMapping(value = {"/signup"}, method = RequestMethod.GET)
+	public  @ResponseBody int registerCheck(UserBean ub) {
+		return cm.registerCheck(ub);
 	}
-	
+	@RequestMapping(value = {"/signup"}, method = RequestMethod.POST)
+	public String signup(UserBean ub,HttpSession session,MultipartFile avatar_img) throws Exception {
+		System.out.println("컨트롤러 도착");
+		try {
+		cs.add_user(ub, session, avatar_img);
+		}catch(Exception e) {	
+		}
+		System.out.println("컨트롤러 종료");
+		
+		return "home";
+	}
+	/*테스팅*/
+	@RequestMapping(value = { "/","/home"}, method = RequestMethod.GET)
+	public String homePage(ModelMap m) {
+		return "home";
+	}
 	//rsa암호화 키 발급
 	@RequestMapping(value = {"/log"}, method = RequestMethod.GET)
 	public @ResponseBody HashMap<String, String> module(HttpServletRequest request){
 		return pe.initRsa(request);
 	}
-	
 	@RequestMapping(value= {"/log"},method=RequestMethod.POST)
 	public @ResponseBody int login(UserBean ub,HttpSession session) throws Exception {
 		 PrivateKey privateKey = (PrivateKey) session.getAttribute(pe.getRsa_web_key());
@@ -72,41 +82,25 @@ public class ComController {
 	        
 	    return 0;
 	}
-	
 	@RequestMapping(value= {"/logout"},method=RequestMethod.GET)
 	public @ResponseBody void logout(HttpSession session) {
 		session.invalidate();
 	}
-	@RequestMapping(value = {"/chat"}, method = RequestMethod.GET)
-	public String chatForm() {
-		return "chatForm";
-	}
-	
+	/*채팅*/
+/*
 	@RequestMapping(value = {"/chat"}, method = RequestMethod.POST)
 	public @ResponseBody void chat(ChatBean cb,HttpSession session) throws NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 		System.out.println((String)session.getAttribute("userId"));
 		cb.setFromId((String)session.getAttribute("userId"));
 		cs.sendChat(cb);
 	}
-	
-	//회원가입
-	@RequestMapping(value = {"/registerCheck"}, method = RequestMethod.POST)
-	public @ResponseBody int registerCheck(UserBean ub) {
-		return cm.registerCheck(ub);
+	@RequestMapping(value= {"/chatlist"},method=RequestMethod.POST)
+	public @ResponseBody List<Map<String, Object>> getChatList(ChatBean cb,HttpSession session){
+		cb.setFromId((String) session.getAttribute("userId"));
+		return cs.getChatListByRecent(cb,5);
 	}
-	@RequestMapping(value = {"/signup"}, method = RequestMethod.POST)
-	public String signup(UserBean ub,HttpSession session,MultipartFile avatar_img) throws Exception {
-		System.out.println("컨트롤러 도착");
-		cs.add_user(ub, session, avatar_img);
-		System.out.println("컨트롤러 종료");
-		
-		return "home";
-	}
-	/*테스팅*/
-	@RequestMapping(value = { "/","/home"}, method = RequestMethod.GET)
-	public String homePage(ModelMap m) {
-		return "home";
-	}
+	*/
+	/*채팅*/
 	
 	@RequestMapping(value = { "/k-drive"}, method = RequestMethod.GET)
 	public String k_drive(ModelMap m) {

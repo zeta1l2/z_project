@@ -6,9 +6,10 @@
 		<div class="col-md-4 compose">
 			<div class="mail-profile">
 				<div class="mail-pic">
-					<a href="#"><img
+					<a href="#"><img id="avatar1"
 						style="width: 50px; height: 50px; border-radius: 50%"
-						src="${pageContext.request.contextPath}/images/avatar/${userAvatar}"></a>
+						src="${pageContext.request.contextPath}/images/avatar/${userId}.jpg"
+						onerror="img_error()"></a>
 				</div>
 				<div class="mailer-name">
 					<h5>
@@ -18,27 +19,18 @@
 				</div>
 				<div class="clearfix"></div>
 			</div>
-			<div class="compose-block">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown"
-					aria-expanded="false" onclick="find_friend()"> 친구찾기 </a>
-			</div>
-			<div class="compose-bottom" hidden="hidden" id="ff">
+			<div class="compose-bottom" id="ff">
 				<nav class="">
 					<ul class="">
 						<li class=""><a href="#tab1" data-toggle="tab"><input
-								id="search_user" type="text" placeholder="Search..."
-								oninput="user_list()">
+								id="search_user" type="text" placeholder="Find your friend"
+								oninput="user_list()" onclick="user_list()">
 								<div class="clearfix"></div></a></li>
 					</ul>
 				</nav>
 				<nav class="">
-					<ul class="">
-						<li class=""><a href="#tab1" data-toggle="tab">
-						<span class="prfil-img" ><img style="width:50px; height:50px;" src="${pageContext.request.contextPath}/images/avatar/${userAvatar}">
-										</span> 
-									<p>${userId}</p>
-									<span>${userGrade}</span>
-						</a></li>
+					<ul id="user_list" style="overflow-y:auto;overflow-x:hidden;height:380px;">
+						
 					</ul>
 				</nav>
 			</div>
@@ -125,7 +117,7 @@
 								<td class="hidden-xs"><i
 									class="fa fa-star icon-state-warning"> </i></td>
 								<td class="hidden-xs">Google</td>
-								<td>Lorem Ipsum is simply</td>
+								<td>Lorem Ipsum is simply<br><br></td>
 								<td></td>
 								<td>12 march</td>
 							</tr>

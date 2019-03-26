@@ -305,7 +305,9 @@
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown"
 								aria-expanded="false">
 									<div class="profile_img">
-										<span class="prfil-img" ><img style="width:50px; height:50px;" src="${pageContext.request.contextPath}/images/avatar/${userAvatar}">
+										<span class="prfil-img" ><img id="avatar" style="width:50px; height:50px; border-radius:50%;" 
+										src="${pageContext.request.contextPath}/images/avatar/${userId}.jpg"
+										onerror="img_error()">
 										</span>
 										<div class="user-name">
 											<p>${userId}</p>

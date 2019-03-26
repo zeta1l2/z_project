@@ -5,7 +5,7 @@
     </select>
     
     <insert id="signupDb" parameterType="beans.UserBean" >
-    {CALL P_SIGNUP(#{m_id},#{m_pw},#{m_name},#{m_phone},#{m_avatar})}
+    {CALL P_SIGNUP(#{m_id},#{m_pw},#{m_name},#{m_phone})}
     </insert>
     
 </mapper>

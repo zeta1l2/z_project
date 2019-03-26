@@ -109,7 +109,7 @@ public class MongoDb {
 
 	        for(Field field : fields){
 	            String filedName = field.getName();
-	            String methodName = filedName.replace(filedName.substring(0, 1), filedName.substring(0, 1).toUpperCase());
+	            String methodName = filedName.replaceFirst(filedName.substring(0, 1), filedName.substring(0, 1).toUpperCase());
 	            map.put(filedName, o.getClass().getDeclaredMethod("get" + methodName).invoke(o));
 	        }
 
