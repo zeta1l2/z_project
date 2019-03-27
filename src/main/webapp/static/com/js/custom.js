@@ -1,12 +1,13 @@
 var idCheck = 0;
 var pwdCheck = 0;
+//중복체크
 function checkId(){
 	idCheck=0;
 	var userid=document.join.m_id.value;
 
 	$.ajax({
 		method : "post",
-    	url : "/z_project-beta/signup",
+    	url : "/z_project-beta/register_check",
 		data : {
 			m_id : userid,
 		},
@@ -207,22 +208,12 @@ function getInfiniteChat(){
 		chatListFunction(lastId);
 	},3000);
 }
-
-function find_friend(){
-	if($('#ff').prop('hidden')){
-		
-	$('#ff').removeAttr('hidden');
-	}else{
-		$('#ff').attr('hidden','hidden');
-		$('#user_list').empty()
-		$('#search_user').val('')
-	}
-}
+//회원 검색
 function user_list(){
 	var search=$(search_user).val();
 	$('#user_list').empty()
 	$.ajax({
-		type:"get",
+		type:"POST",
 		url:"/z_project-beta/chat/box",
 		dataType:"JSON",
 		data:{
@@ -231,16 +222,16 @@ function user_list(){
 		success: function(data){
 			$('#user_list').empty()
 			for(var i=0; i<data.length; i++){
-			var avatar=(data[i]['M_AVATAR']) ?  data[i]['M_AVATAR']:'null.png';
 			$('#user_list').append("<li><a href='#tab1' data-toggle='tab'>"+
 						"<div class='profile_img'>"+
 						"<span class='prfil-img' >"+
 						"<img style='width:50px; height:50px; border-radius:50%'"+
-						"src='/z_project-beta/images/avatar/"+avatar+"'>"+
+						"src='/z_project-beta/images/avatar/"+data[i]['m_id']+".jpg'"+
+						"onerror=this.src='/z_project-beta/images/avatar/null.jpg'>"+
 						"</span>"+
 						"<div class='user-name'>"+
-						"<p>"+data[i]['M_ID']+"</p>"+
-						"<span>"+data[i]['M_NAME']+"</span>"+
+						"<p>"+data[i]['m_id']+"</p>"+
+						"<span>"+data[i]['m_name']+"</span>"+
 						"</div>"+
 						"<div class='clearfix'></div>"+
 						"</div>"+
@@ -250,7 +241,4 @@ function user_list(){
 		}
 	});
 }
-function img_error(){
-	$('#avatar').attr("src","/z_project-beta/images/avatar/null.jpg")
-	$('#avatar1').attr("src","/z_project-beta/images/avatar/null.jpg")
-}
+

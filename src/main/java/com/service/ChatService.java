@@ -1,10 +1,10 @@
 package com.service;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +26,15 @@ public class ChatService {
 	@Autowired MongoDb md;
 	
 	//친구 불러오기
-	public ArrayList<HashMap<String, Object>> getUser(UserBean ub){
-		return dm.userList(ub);
+	public List<Map<String, Object>> getUser(UserBean ub, HttpSession session){
+		System.out.println("친구목록 불러오기 서비스 실행");
+		String loginUser=(String)session.getAttribute("userId");
+		System.out.println(loginUser);
+		Bson where= Filters.and(Filters.regex("m_id", ub.getM_id()),Filters.ne("m_id", loginUser));
+		List<Map<String, Object>> list=md.mongoSelect("z_project-beta", "user",where);
+		System.out.println(list);
+		System.out.println("친구목록 불러오기 서비스 종료");
+		return list;
 	}
 	
 	//채팅

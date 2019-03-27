@@ -18,8 +18,8 @@ $(".sidebar-icon").click(function() {
             });
 </script>
 <!--scrolling js-->
-		<script src="js/jquery.nicescroll.js"></script>
-		<script src="js/scripts.js"></script>
+		<script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js"></script>
+		<script src="${pageContext.request.contextPath}/js/scripts.js"></script>
 		<!--//scrolling js-->
-<script src="js/bootstrap.js"> </script>
+<script src="${pageContext.request.contextPath}/js/bootstrap.js"> </script>
 <!-- mother grid end here-->

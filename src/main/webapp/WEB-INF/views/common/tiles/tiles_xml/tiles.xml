@@ -18,18 +18,20 @@
        <put-attribute name="title" value="Welcome" />  
        <put-attribute name="body" value="/WEB-INF/views/common/view/home.jsp" />  
    </definition> 
-   
-   <!-- Product Page -->
+   <!-- chatForm Page -->
    <definition name="chatForm" extends="base-definition">  
        <put-attribute name="title" value="메시지" />  
        <put-attribute name="body" value="/WEB-INF/views/common/view/message.jsp" />  
    </definition>
-   <!-- Product Page -->
-   <definition name="login" extends="base-definition">  
-       <put-attribute name="title" value="로그인" />  
-       <put-attribute name="body" value="/WEB-INF/views/common/view/login.jsp" />
-       <put-attribute name="sidebar" value="" />
-       <put-attribute name="scroll" value="" />  
+   <!-- chatBox page -->
+   <definition name="chatbox" extends="base-definition">  
+       <put-attribute name="title" value="채팅상자" />  
+       <put-attribute name="body" value="/WEB-INF/views/common/view/chat-box.jsp" />  
+   </definition>
+   <!-- login_error Page -->
+   <definition name="login_error" extends="base-definition">  
+       <put-attribute name="title" value="에러" />  
+       <put-attribute name="body" value="/WEB-INF/views/common/view/error.jsp" />
    </definition>
    <!-- K-Drive Page -->
 	<definition name="k-drive" extends="base-definition">

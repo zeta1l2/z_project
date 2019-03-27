@@ -266,7 +266,7 @@
 										<input type="hidden" id="RSAExponent" value="${RSAExponent}" />
 										<input class="form-control" type="text" id="m_id" name="m_id"
 											maxlength="20" placeholder="아이디를 입력하세요."
-											onfocusout="checkId()" required="required"> <input
+											oninput="checkId()" required="required"> <input
 											onkeyup="checkPw()" class="form-control" id="m_pw"
 											type="password" name="m_pw" maxlength="20"
 											placeholder="비밀번호를 입력하세요." required="required"> <input
@@ -305,9 +305,9 @@
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown"
 								aria-expanded="false">
 									<div class="profile_img">
-										<span class="prfil-img" ><img id="avatar" style="width:50px; height:50px; border-radius:50%;" 
+										<span class="prfil-img" ><img id="avatar"
 										src="${pageContext.request.contextPath}/images/avatar/${userId}.jpg"
-										onerror="img_error()">
+										onerror="this.src='/z_project-beta/images/avatar/null.jpg'">
 										</span>
 										<div class="user-name">
 											<p>${userId}</p>

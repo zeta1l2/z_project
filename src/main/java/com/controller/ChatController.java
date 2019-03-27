@@ -1,7 +1,9 @@
 package com.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,11 +30,19 @@ public class ChatController {
 	}
 	
 	/*채팅*/
+	@RequestMapping(value = {"/box"}, method = RequestMethod.POST)
+	public @ResponseBody List<Map<String, Object>> chat(UserBean ub,HttpSession session){
+		System.out.println("채팅 유저 불러오기 컨트롤러");
+		return cs.getUser(ub,session);
+	}
 	@RequestMapping(value = {"/box"}, method = RequestMethod.GET)
-	public @ResponseBody ArrayList<HashMap<String, Object>> chat(UserBean ub){
-		System.out.println(ub);
-		System.out.println(cs.getUser(ub));
-		return cs.getUser(ub);
+	public String box(){
+		return "login_error";
+	}
+	@RequestMapping(value = {"/box/{toid}"}, method = RequestMethod.GET)
+	public String chat(){
+		System.out.println("개인채팅 시작 컨트롤러");
+		return "chatbox";
 	}
 	/*채팅*/
 	

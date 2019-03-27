@@ -31,13 +31,25 @@ public class ComController {
 	@Autowired PasswordEncode pe;
 	@Autowired ComService cs;
 	
-	/*테스팅*/
-
-	//회원가입
-	@RequestMapping(value = {"/signup"}, method = RequestMethod.GET)
-	public  @ResponseBody int registerCheck(UserBean ub) {
-		return cm.registerCheck(ub);
+	/*인터셉터*/
+	@RequestMapping(value = {"/login_error"}, method = RequestMethod.GET)
+	public String login_error() {
+		return "login_error";
 	}
+	/*인터셉터*/
+	
+	/*회원가입*/
+	//중복체크
+	@RequestMapping(value = {"/register_check"}, method = RequestMethod.POST)
+	public  @ResponseBody int registerCheck(UserBean ub) {
+		return cs.registerCheck(ub);
+	}
+	//restful 회원가입
+	@RequestMapping(value = {"/signup"}, method = RequestMethod.GET)
+	public String signup(){	
+		return "home";
+	}
+	//회원가입
 	@RequestMapping(value = {"/signup"}, method = RequestMethod.POST)
 	public String signup(UserBean ub,HttpSession session,MultipartFile avatar_img) throws Exception {
 		System.out.println("컨트롤러 도착");
@@ -59,6 +71,7 @@ public class ComController {
 	public @ResponseBody HashMap<String, String> module(HttpServletRequest request){
 		return pe.initRsa(request);
 	}
+	//로그인
 	@RequestMapping(value= {"/log"},method=RequestMethod.POST)
 	public @ResponseBody int login(UserBean ub,HttpSession session) throws Exception {
 		 PrivateKey privateKey = (PrivateKey) session.getAttribute(pe.getRsa_web_key());
@@ -82,11 +95,12 @@ public class ComController {
 	        
 	    return 0;
 	}
+	//로그아웃
 	@RequestMapping(value= {"/logout"},method=RequestMethod.GET)
 	public @ResponseBody void logout(HttpSession session) {
 		session.invalidate();
 	}
-	/*채팅*/
+	/*회원*/
 /*
 	@RequestMapping(value = {"/chat"}, method = RequestMethod.POST)
 	public @ResponseBody void chat(ChatBean cb,HttpSession session) throws NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {

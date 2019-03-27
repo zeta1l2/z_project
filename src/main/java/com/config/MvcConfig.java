@@ -88,7 +88,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(new SystemIc())
-		.addPathPatterns("/inter","/inter/*");
+		.addPathPatterns("/chat","/chat/*");
 	}
 
 	@Override

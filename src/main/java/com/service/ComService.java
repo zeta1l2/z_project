@@ -1,10 +1,12 @@
 package com.service;
 
 import java.security.PrivateKey;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.dao.Dao;
 import com.dao.MongoDb;
 import com.dao.PasswordEncode;
+import com.mongodb.client.model.Filters;
 
 import annotation.maps.ComMap;
 import beans.UserBean;
@@ -27,8 +30,15 @@ public class ComService {
 	String avatar_path="C:\\Users\\HU221\\git\\z_project-beta\\src\\main\\webapp\\static\\com\\images\\avatar";
 	
 	public int registerCheck(UserBean ub) {
-		System.out.println(cm.registerCheck(ub));
-		return 0;
+		System.out.println("mongoDb검색 시작");
+		Bson where=Filters.eq("m_id", ub.getM_id());
+		List<Map<String, Object>> list=md.mongoSelect("z_project-beta", "user",where);
+		System.out.println(list);
+		System.out.println("mongoDb검색 종료");
+		if(list.isEmpty()) {
+			return 0;
+		}
+		return 1;
 	}
 	
 		//회원가입 후 로그인 서비스
