@@ -1,47 +1,55 @@
 package beans;
 
+import java.util.Date;
+
 public class ChatBean {
-	double _id;
-	String fromId;
-	String toId;
-	String chatContent;
-	String chatTime;
+	private Integer chat_code;
+	private String chat_from;
+	private String chat_to;
+	private String chat_content;
+	private Date chat_date;
+	private String chat_read;
 	
-	
-	
-	public double get_id() {
-		return _id;
+	public Integer getChat_code() {
+		return chat_code;
 	}
-	public void set_id(double _id) {
-		this._id = _id;
+	public void setChat_code(Integer chat_code) {
+		this.chat_code = chat_code;
 	}
-	public String getFromId() {
-		return fromId;
+	public String getChat_from() {
+		return chat_from;
 	}
-	public void setFromId(String fromId) {
-		this.fromId = fromId;
+	public void setChat_from(String chat_from) {
+		this.chat_from = chat_from;
 	}
-	public String getToId() {
-		return toId;
+	public String getChat_to() {
+		return chat_to;
 	}
-	public void setToId(String toId) {
-		this.toId = toId;
+	public void setChat_to(String chat_to) {
+		this.chat_to = chat_to;
 	}
-	public String getChatContent() {
-		return chatContent;
+	public String getChat_content() {
+		return chat_content;
 	}
-	public void setChatContent(String chatContent) {
-		this.chatContent = chatContent;
+	public void setChat_content(String chat_content) {
+		this.chat_content = chat_content;
 	}
-	public String getChatTime() {
-		return chatTime;
+	public Date getChat_date() {
+		return chat_date;
 	}
-	public void setChatTime(String chatTime) {
-		this.chatTime = chatTime;
+	public void setChat_date(Date chat_date) {
+		this.chat_date = chat_date;
 	}
+	public String getChat_read() {
+		return chat_read;
+	}
+	public void setChat_read(String chat_read) {
+		this.chat_read = chat_read;
+	}
+
 	@Override
 	public String toString() {
-		return String.format("ChatBean [_id=%s, fromId=%s, toId=%s, chatContent=%s, chatTime=%s]"
-				,_id,fromId,toId,chatContent,chatTime);
+		return String.format("ChatBean [chat_code=%s, chat_from=%s, chat_to=%s, chat_content=%s, chat_date=%s, chat_read=%s]"
+				,chat_code,chat_from,chat_to,chat_content,chat_date,chat_read);
 	}
 }

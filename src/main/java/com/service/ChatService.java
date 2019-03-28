@@ -1,6 +1,8 @@
 package com.service;
 
-import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +12,7 @@ import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.dao.Dao;
 import com.dao.MongoDb;
 import com.mongodb.client.model.Filters;
 
@@ -24,6 +27,7 @@ public class ChatService {
 	@Autowired ComMap cm;
 	@Autowired DongjeMap dm;
 	@Autowired MongoDb md;
+	@Autowired Dao dao;
 	
 	//친구 불러오기
 	public List<Map<String, Object>> getUser(UserBean ub, HttpSession session){
@@ -36,7 +40,31 @@ public class ChatService {
 		System.out.println("친구목록 불러오기 서비스 종료");
 		return list;
 	}
+	/*채팅*/
+	//채팅 내용 불러오기
+	public ArrayList<HashMap<String, Object>> getTalk(ChatBean cb){
+		System.out.println("채팅 내용 불러오기 서비스 실행");
+		ArrayList<HashMap<String, Object>> result =new ArrayList<HashMap<String,Object>>();
+		//날짜 변환
+		for(HashMap<String, Object> date : dm.getTalk(cb)) {
+			String d=dao.date_change(date.get("CHAT_DATE"));
+			d=dao.date_change(d);
+			date.replace("CHAT_DATE", d);
+			result.add(date);
+		}
+		System.out.println("채팅 내용 불러오기 서비스 종료");
+		return result;
+	}
+	//채팅 내용 전송하기
+	public void setTalk(ChatBean cb) {
+		System.out.println("채팅 내용 전송하기 서비스 실행");
+		System.out.println(cb);
+		dm.setTalk(cb);
+		System.out.println("채팅 내용 전송하기 서비스 종료");
+	}
+	/*채팅*/
 	
+	/* 몽고 db 채팅 구현 테스팅
 	//채팅
 	public List<Map<String, Object>> getChatListById(ChatBean cb){
 		Bson where= Filters.and(Filters.or(
@@ -76,4 +104,5 @@ public class ChatService {
 			cb.setChatTime(md.getTime());
 			md.mongoInsert("chat", "chat", cb);
 		}
+	*/
 }

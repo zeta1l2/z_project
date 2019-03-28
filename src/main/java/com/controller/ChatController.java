@@ -1,5 +1,7 @@
 package com.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.service.ChatService;
 
 import annotation.maps.DongjeMap;
+import beans.ChatBean;
 import beans.UserBean;
 
 
@@ -39,10 +42,21 @@ public class ChatController {
 	public String box(){
 		return "login_error";
 	}
-	@RequestMapping(value = {"/box/{toid}"}, method = RequestMethod.GET)
-	public String chat(){
+	@RequestMapping(value = {"/talk"}, method = RequestMethod.GET)
+	public @ResponseBody ArrayList<HashMap<String,Object>> talk(ChatBean cb,HttpSession session){
 		System.out.println("개인채팅 시작 컨트롤러");
-		return "chatbox";
+		cb.setChat_from((String)session.getAttribute("userId"));
+		ArrayList<HashMap<String, Object>> result=cs.getTalk(cb);
+		System.out.println(result);
+		System.out.println("개인채팅 시작 컨트롤러 종료");
+		return result;
+	}
+	@RequestMapping(value = {"/talk"}, method = RequestMethod.POST)
+	public @ResponseBody void send_talk(ChatBean cb,HttpSession session){
+		System.out.println("개인채팅 입력 컨트롤러");
+		cb.setChat_from((String)session.getAttribute("userId"));
+		cs.setTalk(cb);
+		System.out.println("개인채팅 입력 컨트롤러 종료");
 	}
 	/*채팅*/
 	

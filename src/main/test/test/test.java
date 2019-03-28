@@ -30,6 +30,7 @@ public class test {
 		MongoDatabase mdb;
 		
 	public static void main(String[] args) throws NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+		/*
 		test md=new test();	
 		ChatBean cn=new ChatBean();
 		cn.set_id(md.getSequence("chat_num"));
@@ -45,7 +46,7 @@ public class test {
 			map.replace("chatTime", md.getTime((String)map.get("chatTime")));
 		}
 		System.out.println(list);
-		
+		*/
 	}
 	//시스템 date 가져옴
 		public String getTime(String date) {

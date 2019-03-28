@@ -1,9 +1,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="annotation.maps.DongjeMap">
-    
     <select id="userList" parameterType="beans.UserBean" resultType="map">
     SELECT m_id, m_name FROM MEMBER WHERE M_ID like '%' || #{m_id} || '%' 
     ORDER BY m_id
     </select>
     
+    <select id="getTalk" parameterType="beans.ChatBean" resultType="map">
+    SELECT * FROM CHATBOX 
+    WHERE (CHAT_FROM=#{chat_from} AND CHAT_TO=#{chat_to}) 
+    or (CHAT_FROM=#{chat_to} AND CHAT_TO=#{chat_from}) 
+    ORDER BY CHAT_DATE
+    </select>
+    
+    <insert id="setTalk" parameterType="beans.ChatBean">
+    { CALL p_set_talk(#{chat_from},#{chat_to},#{chat_content})} 
+    </insert>
 </mapper>

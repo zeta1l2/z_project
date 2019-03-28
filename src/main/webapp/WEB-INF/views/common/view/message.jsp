@@ -4,7 +4,7 @@
 	<div class="inbox">
 		<h2>Inbox</h2>
 		<div class="col-md-4 compose">
-			<a href="#tab1" data-toggle="tab">
+			<a href="#tab1" data-toggle="tab" onclick="getTalk('${userId}')">
 			<div class="mail-profile">
 				<div class="mail-pic">
 					<img id="avatar"
@@ -17,7 +17,6 @@
 				</div>
 				<div class="clearfix"></div>
 			</div>
-			</a>
 			<div class="compose-bottom" id="ff">
 				<nav class="">
 					<ul class="">
@@ -36,7 +35,7 @@
 		</div>
 		<div class="col-md-8 mailbox-content  tab-content tab-content-in">
 			<div class="tab-pane active text-style" id="tab1">
-				<div class="mailbox-border" style="height:500px; overflow-y:auto;overflow-x:hidden;">
+				<div class="mailbox-border" id="chat_scroll"style="height:500px; overflow-y:auto;overflow-x:hidden;">
 					<table class="table tab-border">
 						<tbody id="chat_box">
 							<tr class="unread checked" style="background-color:#E4DDFA ">
@@ -59,11 +58,12 @@
 					</table>
 				</div>
 				<hr style="border: 1px solid #FC8213">
-				<div class="col-xs-10">
-					<textarea style="height: 80px; resize: none;" id="chatContent" class="form-control" placeholder="메시지를 입력하세요." maxlength="100"></textarea>
-				</div>
+				<form class="col-xs-10" name="talk">
+					<input type="hidden" value="" id="send_to_id">
+					<textarea style="height: 80px; resize: none;" id="chat_content" class="form-control" placeholder="메시지를 입력하세요." maxlength="100"></textarea>
+				</form>
 				<div class="col-xs-2">
-					<button type="button" class="btn btn-default pull-right" onclick="sumbitFunction();">전송</button>
+					<button type="button" class="btn btn-default pull-right" onclick="send_talk();">전송</button>
 				</div>
 				<div class="clearfix"></div>
 			</div>

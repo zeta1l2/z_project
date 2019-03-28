@@ -1,3 +1,4 @@
+/*회원*/
 var idCheck = 0;
 var pwdCheck = 0;
 //중복체크
@@ -92,6 +93,7 @@ function signup(){
 	$('#m_name').val(rsa.encrypt(username));
 	$('#m_phone').val(rsa.encrypt(userphone));
 }
+//로그아웃
 function logout(){
 	$.ajax({
 		type: "get",
@@ -101,6 +103,7 @@ function logout(){
 		}
 	})
 }
+//암호화 로그인
 function a_log(){
 	$.ajax({
 		type: "get",
@@ -142,72 +145,6 @@ function a_log(){
 		},
 	})
 }
-
-//메시지 보내기
-function sendChat(){
-	$.ajax({
-		type: "post",
-		url: "/z_project-beta/chat",
-		data: {
-			toId: $('#toId').val(),
-			chatContent: $('#chatContent').val(),
-		},
-		success: function(result){
-			$('#chatContent').val('');
-		}
-
-	});
-}
-var lastId=0;
-function chatListFunction(type){
-	$.ajax({
-		type:"post",
-		url:"/z_project-beta/chatlist",
-		dataType:"JSON",
-		data: {
-			toId:$('#toId').val(),
-		},
-		success: function(data){
-
-			if(data=="")return;
-			$('#chatList').empty();
-			for(var i=0;i<data.length;i++){
-				addChat(data[i]['toId'],data[i]['chatContent'],data[i]['chatTime'])
-			}
-			lastId=Number(data.last);
-		}
-	});
-}
-
-function addChat(chatName, chatContent, chatTime){
-	$('#chatList').append('<div class="row"'+
-			'<div class="col-lg-12">'+
-			'<div class="media">'+
-			'<a class="pull-left" href="#">'+
-			'<img class="media-object img-circle" src="/z_project-beta/static/com/img/test.png" alt="">'+
-			'</a>'+
-			'<div class="media-body">'+
-			'<h4 class="media-heading">'+
-			chatName +
-			'<span class="small pull-right">'+
-			chatTime +
-			'</span>'+
-			'</h4>'+
-			'<p>'+
-			chatContent +
-			'</p>'+
-			'</div>'+
-			'</div>'+
-			'</div>'+
-			'</div>'+
-			'<hr>');
-	$('#chatList').scrollTop($('#chatList')[0].scrollHeight);
-}
-function getInfiniteChat(){
-	setInterval(function(){
-		chatListFunction(lastId);
-	},3000);
-}
 //회원 검색
 function user_list(){
 	var search=$(search_user).val();
@@ -241,4 +178,62 @@ function user_list(){
 		}
 	});
 }
+/*회원*/
+/*채팅*/
+//메시지 보내기
+function send_talk(){
+	$.ajax({
+		type: "post",
+		url: "/z_project-beta/chat/talk",
+		data: {
+			chat_to: $('#send_to_id').val(),
+			chat_content: $('#chat_content').val(),
+		},
+		success: function(result){
+			$('#chat_content').val('');
+		}
 
+	});
+}
+//채팅내용 가져오기
+function getTalk(to_id){
+	$.ajax({
+		type:"get",
+		url:"/z_project-beta/chat/talk",
+		dataType:"JSON",
+		data: {
+			chat_to: to_id,
+		},
+		success: function(data){
+			$('#send_to_id').val(to_id);
+			if(data=="") return;
+			$('#chat_box').empty();
+			for(var i=0;i<data.length;i++){
+				talkList(data[i]['CHAT_TO'],data[i]['CHAT_CONTENT'],data[i]['CHAT_DATE'])
+			}
+			getInfiniteChat(to_id);
+		}
+	});
+}
+//채팅내용 테이블 출력
+function talkList(chatId, chatContent, chatTime){
+	$('#chat_box').append("<tr class='unread checked'"+
+			"style='background-color:#E4DDFA '>"+
+			"<td class='chat_img'>"+
+			"<img onerror=this.src='/z_project-beta/images/avatar/null.jpg' src='/z_project-beta/images/avatar/"+chatId+".jpg'>"+
+			"</td>"+
+			"<td>"+chatId+"</td>"+
+			"<td>"+chatContent+"</td>"+
+			"<td></td>"+
+			"<td>"+chatTime+"</td>"+
+			"</tr>");
+	
+	$('#chat_scroll').scrollTop($('#chat_scroll')[0].scrollHeight);
+}
+
+function getInfiniteChat(to_id){
+	setInterval(function(){
+		getTalk(to_id);
+	},10000);
+}
+/*채팅*/
