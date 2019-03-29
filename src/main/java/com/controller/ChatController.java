@@ -58,6 +58,15 @@ public class ChatController {
 		cs.setTalk(cb);
 		System.out.println("개인채팅 입력 컨트롤러 종료");
 	}
+	@RequestMapping(value = {"/read"}, method = RequestMethod.GET)
+	public @ResponseBody HashMap<String, String> get_read(HttpSession session){
+		System.out.println("신규 메시지 알람 컨트롤러");
+		String user=(String)session.getAttribute("userId");
+		HashMap<String, String> result=cs.get_read(user);
+		System.out.println(result);
+		System.out.println("신규 메시지 알람 컨트롤러 종료");
+		return result;
+	}
 	/*채팅*/
 	
 	

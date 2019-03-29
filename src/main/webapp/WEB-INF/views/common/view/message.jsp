@@ -4,7 +4,7 @@
 	<div class="inbox">
 		<h2>Inbox</h2>
 		<div class="col-md-4 compose">
-			<a href="#tab1" data-toggle="tab" onclick="getTalk('${userId}')">
+			<a href="#tab1" data-toggle="tab" onclick="clearInterval(inter),$('#user_list').empty(),getInfiniteChat('${userId}')">
 			<div class="mail-profile">
 				<div class="mail-pic">
 					<img id="avatar"
@@ -27,7 +27,7 @@
 					</ul>
 				</nav>
 				<nav class="">
-					<ul id="user_list" style="overflow-y:auto;overflow-x:hidden; max-height:380px;">	
+					<ul id="user_list">	
 					</ul>
 				</nav>
 			</div>
@@ -35,35 +35,19 @@
 		</div>
 		<div class="col-md-8 mailbox-content  tab-content tab-content-in">
 			<div class="tab-pane active text-style" id="tab1">
-				<div class="mailbox-border" id="chat_scroll"style="height:500px; overflow-y:auto;overflow-x:hidden;">
+				<div class="mailbox-border" id="chat_scroll">
 					<table class="table tab-border">
 						<tbody id="chat_box">
-							<tr class="unread checked" style="background-color:#E4DDFA ">
-								<td class="chat_img">
-								<img src="${pageContext.request.contextPath}/images/avatar/${userId}.jpg">
-								</td>
-								<td>${userId }</td>
-								<td>Lorem Ipsum is simply</td>
-								<td></td>
-								<td>12 march</td>
-							</tr>
-							<tr class="unread checked" style="background-color:#E0FDED">
-								<td></td>
-								<td></td>
-								<td class="chat_img"></td>
-								<td>12 march</td>
-								<td>Lorem Ipsum is simply</td>
-							</tr>
 						</tbody>
 					</table>
 				</div>
 				<hr style="border: 1px solid #FC8213">
 				<form class="col-xs-10" name="talk">
 					<input type="hidden" value="" id="send_to_id">
-					<textarea style="height: 80px; resize: none;" id="chat_content" class="form-control" placeholder="메시지를 입력하세요." maxlength="100"></textarea>
+					<textarea id="chat_content" class="form-control" placeholder="메시지를 입력하세요." maxlength="100" ></textarea>
 				</form>
 				<div class="col-xs-2">
-					<button type="button" class="btn btn-default pull-right" onclick="send_talk();">전송</button>
+					<button type="button" id="send_talk_btn"class="btn btn-default pull-right" onclick="send_talk()">전송</button>
 				</div>
 				<div class="clearfix"></div>
 			</div>

@@ -1,12 +1,11 @@
 package test;
 
-import java.text.SimpleDateFormat;
-
 public class dateTest {
 //1553738671000
 	public static void main(String[] args) {
-		SimpleDateFormat dt=new SimpleDateFormat("yyyy년 MM월 dd일 hh:mm:ss");
-
+		String date="2019년 03월 29일 오후  14:00:13";
+		System.out.println(date.substring(0,13));
+		System.out.println(date.substring(14, date.length()));
 	}
 
 }

@@ -1,7 +1,6 @@
 package com.service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,11 +45,17 @@ public class ChatService {
 		System.out.println("채팅 내용 불러오기 서비스 실행");
 		ArrayList<HashMap<String, Object>> result =new ArrayList<HashMap<String,Object>>();
 		//날짜 변환
+		try {
 		for(HashMap<String, Object> date : dm.getTalk(cb)) {
 			String d=dao.date_change(date.get("CHAT_DATE"));
 			d=dao.date_change(d);
-			date.replace("CHAT_DATE", d);
+			date.put("CHAT_TIME", d.substring(14, d.length()-3));
+			date.replace("CHAT_DATE", d.substring(0, 13));
 			result.add(date);
+		}
+		}catch(Exception e) {
+			System.out.println("불러올 내용 없음 서비스 종료");
+			return null;
 		}
 		System.out.println("채팅 내용 불러오기 서비스 종료");
 		return result;
@@ -58,9 +63,22 @@ public class ChatService {
 	//채팅 내용 전송하기
 	public void setTalk(ChatBean cb) {
 		System.out.println("채팅 내용 전송하기 서비스 실행");
+		cb.setChat_content(dao.changeContent(cb.getChat_content()));
 		System.out.println(cb);
 		dm.setTalk(cb);
 		System.out.println("채팅 내용 전송하기 서비스 종료");
+	}
+	//신규 메시지 숫자
+	public HashMap<String, String> get_read(String user) {
+		System.out.println("신규 채팅 알람 서비스 시작");
+		HashMap<String, String> map;
+		try {
+		map=dm.get_Read(user);
+		}catch(NullPointerException e) {
+			return null;
+		}
+		System.out.println("신규 채팅 알람 서비스 종료");
+		return map;
 	}
 	/*채팅*/
 	

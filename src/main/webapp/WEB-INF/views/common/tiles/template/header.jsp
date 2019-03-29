@@ -8,7 +8,7 @@
 <script src="${pageContext.request.contextPath}/js/jsbn.js"></script>
 <script src="${pageContext.request.contextPath}/js/prng4.js"></script>
 <script src="${pageContext.request.contextPath}/js/rng.js"></script>
-
+<script>getRead_m()</script>
 <div class="mother-grid-inner">
 	<!--header start here-->
 	<div class="header-main fixed">
@@ -36,7 +36,7 @@
 					<li class="dropdown head-dpdn"><a href="#"
 						class="dropdown-toggle" data-toggle="dropdown"
 						aria-expanded="false"><i class="fa fa-envelope"></i><span
-							class="badge">3</span></a>
+							class="badge" id="talk_read">7</span></a>
 						<ul class="dropdown-menu">
 							<li>
 								<div class="notification_header">

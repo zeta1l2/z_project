@@ -71,14 +71,6 @@ public class MongoDb {
 		return keys;
 	}
 	
-	//db에 저장되어있는 내용을 수정
-	public String changeContent(String content) {
-		String result=content.replaceAll(" ", "&nbsp")
-				.replaceAll("<", "&lt").replaceAll(">", "&gt")
-	            .replaceAll("\n", "<br>");
-	    return result;
-	}
-	
 	//db 현재 날짜 반환 
 	public String getTime() {
 		SimpleDateFormat format1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

@@ -8,3 +8,16 @@ img#avatar{
 	height: 50px; 
 	border-radius: 50%;
 }
+textarea#chat_content{
+	height: 80px; 
+	resize: none;
+}
+ul#user_list{
+	overflow-y:auto;
+	overflow-x:hidden;
+	max-height:380px;
+}
+div#chat_scroll{
+	height:500px; overflow-y:auto;
+	overflow-x:hidden;
+}

@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.UUID;
 
 import org.apache.commons.io.output.FileWriterWithEncoding;
@@ -79,7 +78,7 @@ public class Dao {
 		}
 		//날짜 변환
 		public String date_change(Object object) {
-			SimpleDateFormat dt=new SimpleDateFormat("yyyy년 MM월 dd일 hh:mm:ss");
+			SimpleDateFormat dt=new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm:ss");
 			String result=dt.format(object);
 			return result;
 		}
@@ -88,12 +87,19 @@ public class Dao {
 			System.out.println(date);
 			int chatTime=Integer.parseInt(date.substring(14, 16));
 			String timeType="오전";
-			if(chatTime >12) {
+			if(chatTime >11) {
 				timeType="오후";
 				chatTime-=12;
 			}
 			String time=String.format("%s %s  %s", date.substring(0, 13),timeType,date.substring(14, 22));
 			
 			return time;
+		}
+		//db에 저장되어있는 내용을 수정
+		public String changeContent(String content) {
+			String result=content.replaceAll(" ", "&nbsp")
+					.replaceAll("<", "&lt").replaceAll(">", "&gt")
+		            .replaceAll("\n", "<br>");
+		    return result;
 		}
 }

@@ -71,7 +71,6 @@ function getmodulus(){
 		success: function(data){
 			$('#RSAModulus').val(data['RSAModulus']);
 			$('#RSAExponent').val(data['RSAExponent']);
-
 		},
 	})
 }
@@ -159,7 +158,7 @@ function user_list(){
 		success: function(data){
 			$('#user_list').empty()
 			for(var i=0; i<data.length; i++){
-			$('#user_list').append("<li><a href='#tab1' data-toggle='tab'>"+
+			$('#user_list').append("<li><a onclick='clearInterval(inter),$(\"#user_list\").empty(),getInfiniteChat(\""+data[i]['m_id']+"\")' href='#tab1' data-toggle='tab'>"+
 						"<div class='profile_img'>"+
 						"<span class='prfil-img' >"+
 						"<img style='width:50px; height:50px; border-radius:50%'"+
@@ -181,6 +180,7 @@ function user_list(){
 /*회원*/
 /*채팅*/
 //메시지 보내기
+var scroll_f=0;
 function send_talk(){
 	$.ajax({
 		type: "post",
@@ -190,12 +190,15 @@ function send_talk(){
 			chat_content: $('#chat_content').val(),
 		},
 		success: function(result){
-			$('#chat_content').val('');
+			$('#chat_content').val(''); 
+			scroll_f=0;
 		}
 
 	});
 }
+var inter;
 //채팅내용 가져오기
+var day=0;
 function getTalk(to_id){
 	$.ajax({
 		type:"get",
@@ -206,34 +209,84 @@ function getTalk(to_id){
 		},
 		success: function(data){
 			$('#send_to_id').val(to_id);
-			if(data=="") return;
 			$('#chat_box').empty();
+			if(data=="") return false;
+				
 			for(var i=0;i<data.length;i++){
-				talkList(data[i]['CHAT_TO'],data[i]['CHAT_CONTENT'],data[i]['CHAT_DATE'])
+				if(data[i]['CHAT_DATE'] != day){
+					day=data[i]['CHAT_DATE'];
+					talkListDate(day);
+				}
+				if(data[i]['CHAT_TO'] == to_id){
+					talkList2(data[i]['CHAT_CONTENT'],data[i]['CHAT_TIME']);
+				}else{
+					talkList1(data[i]['CHAT_FROM'],data[i]['CHAT_CONTENT'],data[i]['CHAT_TIME']);
+				}
 			}
-			getInfiniteChat(to_id);
+			var scroll_h=$('#chat_scroll').prop("scrollHeight");
+			
+				if(scroll_f==0 || scroll_h-$('#chat_scroll').scrollTop()<700){
+					scroll_f=1;
+					$('#chat_scroll').scrollTop($('#chat_scroll')[0].scrollHeight);
+				}
+			day=0;
 		}
 	});
 }
 //채팅내용 테이블 출력
-function talkList(chatId, chatContent, chatTime){
+function talkList1(chatId, chatContent, chatTime){
 	$('#chat_box').append("<tr class='unread checked'"+
 			"style='background-color:#E4DDFA '>"+
-			"<td class='chat_img'>"+
+			"<td class='chat_img' style='width:20%'>"+
 			"<img onerror=this.src='/z_project-beta/images/avatar/null.jpg' src='/z_project-beta/images/avatar/"+chatId+".jpg'>"+
+			"<br>&nbsp;"+chatId+
 			"</td>"+
-			"<td>"+chatId+"</td>"+
 			"<td>"+chatContent+"</td>"+
 			"<td></td>"+
-			"<td>"+chatTime+"</td>"+
+			"<td style='text-align:right'>"+chatTime+"</td>"+
 			"</tr>");
-	
-	$('#chat_scroll').scrollTop($('#chat_scroll')[0].scrollHeight);
+}
+function talkList2(chatContent, chatTime){
+	$('#chat_box').append("<tr class='unread checked' style='background-color:#E0FDED'>"+
+								"<td>"+chatTime+"</td>"+
+								"<td class='chat_img'></td>"+
+								"<td></td>"+
+								"<td style='text-align:right'>"+chatContent+"</td>"+
+							"</tr>");
+}
+function talkListDate(day){
+	$('#chat_box').append("<tr class='unread checked'>"+
+			"<td colspan='4' style='text-align:center'>"+day+"</td>"+
+		"</tr>");
+}
+//채팅 반동기화
+function getInfiniteChat(to_id){
+	inter=setInterval(function(){
+		getTalk(to_id);
+	},3000);
+}
+//textarea
+$(function() {
+	  $('#chat_content').on('keydown', function(event) {
+	      if (event.keyCode == 13)
+	          if (!event.shiftKey){
+	             event.preventDefault();
+	             var button=document.getElementById('send_talk_btn');
+	             button.click();
+	          }
+	  });
+	});
+//안읽은 메시지 갯수 출력
+function getRead_m(){
+	$.ajax({
+		type : "get",
+		url : "/z_project-beta/chat/read",
+		dataType: "json",
+		success : function(data){
+			$("#talk_read").empty();
+			$("#talk_read").append(data['COUNT']);
+		}
+	})
 }
 
-function getInfiniteChat(to_id){
-	setInterval(function(){
-		getTalk(to_id);
-	},10000);
-}
 /*채팅*/
