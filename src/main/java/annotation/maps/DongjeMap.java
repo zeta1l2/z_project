@@ -13,7 +13,8 @@ public interface DongjeMap {
 	public ArrayList<HashMap<String,Object>> userList(UserBean ub);
 	public ArrayList<HashMap<String, Object>> getTalk(ChatBean cb);
 	public void setTalk(ChatBean cb);
+	public ArrayList<HashMap<String,Object>>getNewTalk(String user);
 	
-	@Select("select count(*)count from chatbox where chat_read=1 and CHAT_TO=#{user}")
-	public HashMap<String,String> get_Read(String user);
+	@Select("{CALL p_read(#{chat_to},#{chat_from})}")
+	public void upt_Read(ChatBean cb);
 }

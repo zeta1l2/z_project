@@ -1,5 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+	<c:if test="${not empty from_id}">
+		<script>
+		clearInterval(inter);
+		getInfiniteChat('<%=(String)request.getAttribute("from_id")%>');
+		</script>
+	</c:if>
 <div class="inner-block">
 	<div class="inbox">
 		<h2>Inbox</h2>

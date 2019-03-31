@@ -68,17 +68,34 @@ public class ChatService {
 		dm.setTalk(cb);
 		System.out.println("채팅 내용 전송하기 서비스 종료");
 	}
-	//신규 메시지 숫자
-	public HashMap<String, String> get_read(String user) {
-		System.out.println("신규 채팅 알람 서비스 시작");
-		HashMap<String, String> map;
+	//읽음처리
+	public void get_read(ChatBean cb) {
+		System.out.println("메시지 읽음처리 서비스 시작");
 		try {
-		map=dm.get_Read(user);
-		}catch(NullPointerException e) {
-			return null;
+		dm.upt_Read(cb);
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
-		System.out.println("신규 채팅 알람 서비스 종료");
-		return map;
+		System.out.println("메시지 읽음처리 서비스 종료");
+	}
+	//읽지 않은 최신 메시지
+	public ArrayList<HashMap<String, Object>> get_new_talk(String user) {
+		System.out.println("읽지 않은 최신 메시지 서비스 시작");
+		ArrayList<HashMap<String, Object>> result=new ArrayList<HashMap<String,Object>>();
+		try {
+			for(HashMap<String, Object> date : dm.getNewTalk(user)) {
+				String d=dao.date_change(date.get("CHAT_DATE"));
+				d=dao.date_change(d);
+				date.replace("CHAT_CONTENT", ((String)date.get("CHAT_CONTENT")).substring(0,10)+"...");
+				date.replace("CHAT_DATE", d.substring(0, 13));
+				result.add(date);
+			}
+			}catch(Exception e) {
+				System.out.println("불러올 내용 없음 서비스 종료");
+				return null;
+			}
+		System.out.println("읽지 않은 최신 메시지 서비스 종료");
+		return result;
 	}
 	/*채팅*/
 	

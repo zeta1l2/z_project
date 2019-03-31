@@ -15,4 +15,11 @@
     <insert id="setTalk" parameterType="beans.ChatBean">
     { CALL p_set_talk(#{chat_from},#{chat_to},#{chat_content})} 
     </insert>
+    
+    <select id="getNewTalk" parameterType="String" resultType="map">
+    select cb.* from chatbox cb, 
+    (select max(chat_date)max_chatd from chatbox where chat_to=#{user} group by CHAT_FROM) cbd 
+    where cb.CHAT_DATE= cbd.max_chatd and
+    chat_read=1
+    </select>
 </mapper>

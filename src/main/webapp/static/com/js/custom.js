@@ -211,21 +211,29 @@ function getTalk(to_id){
 			$('#send_to_id').val(to_id);
 			$('#chat_box').empty();
 			if(data=="") return false;
-				
+			var chatRead=1;
 			for(var i=0;i<data.length;i++){
+				chatRead=data[i]['CHAT_READ'];
+	
+				if(chatRead == 1){
+					chatRead='&nbsp;(1)&nbsp;'
+				}else if(chatRead == 0){
+					chatRead='';
+				}
 				if(data[i]['CHAT_DATE'] != day){
 					day=data[i]['CHAT_DATE'];
 					talkListDate(day);
 				}
 				if(data[i]['CHAT_TO'] == to_id){
-					talkList2(data[i]['CHAT_CONTENT'],data[i]['CHAT_TIME']);
+					talkList2(data[i]['CHAT_CONTENT'],data[i]['CHAT_TIME'],chatRead);
 				}else{
-					talkList1(data[i]['CHAT_FROM'],data[i]['CHAT_CONTENT'],data[i]['CHAT_TIME']);
+					talkList1(data[i]['CHAT_FROM'],data[i]['CHAT_CONTENT'],data[i]['CHAT_TIME'],chatRead);
 				}
 			}
 			var scroll_h=$('#chat_scroll').prop("scrollHeight");
 			
 				if(scroll_f==0 || scroll_h-$('#chat_scroll').scrollTop()<700){
+					talk_read(to_id);
 					scroll_f=1;
 					$('#chat_scroll').scrollTop($('#chat_scroll')[0].scrollHeight);
 				}
@@ -234,21 +242,21 @@ function getTalk(to_id){
 	});
 }
 //채팅내용 테이블 출력
-function talkList1(chatId, chatContent, chatTime){
+function talkList1(chatId, chatContent, chatTime,chatRead){
 	$('#chat_box').append("<tr class='unread checked'"+
 			"style='background-color:#E4DDFA '>"+
 			"<td class='chat_img' style='width:20%'>"+
 			"<img onerror=this.src='/z_project-beta/images/avatar/null.jpg' src='/z_project-beta/images/avatar/"+chatId+".jpg'>"+
-			"<br>&nbsp;"+chatId+
+			"<br><div style='text-align:center; width:50px'>"+chatId+"</div>"+
 			"</td>"+
 			"<td>"+chatContent+"</td>"+
 			"<td></td>"+
-			"<td style='text-align:right'>"+chatTime+"</td>"+
+			"<td style='text-align:right'>"+chatTime+chatRead+"</td>"+
 			"</tr>");
 }
-function talkList2(chatContent, chatTime){
+function talkList2(chatContent, chatTime,chatRead){
 	$('#chat_box').append("<tr class='unread checked' style='background-color:#E0FDED'>"+
-								"<td>"+chatTime+"</td>"+
+								"<td>"+chatRead+chatTime+"</td>"+
 								"<td class='chat_img'></td>"+
 								"<td></td>"+
 								"<td style='text-align:right'>"+chatContent+"</td>"+
@@ -284,9 +292,67 @@ function getRead_m(){
 		dataType: "json",
 		success : function(data){
 			$("#talk_read").empty();
-			$("#talk_read").append(data['COUNT']);
+			$("#talk_read").append(data.length);
+			
+			$("#new_talk").empty();
+			if(data.length == 0){
+				$("#new_talk").append("<li>"+
+										  "<div class='notification_header'>"+
+										  "<h3>you have not new message</h3>"+
+										  "</div>"+
+										  "</li>");
+				
+			}else{
+				$("#new_talk").append("<li>"+
+						"<div class='notification_header'>"+
+						"<h3>You have "+data.length+" new messages</h3>"+
+						"</div>"+
+				"</li>");
+			for(var i=0;i<data.length;i++){
+				get_new_talk(data[i]["CHAT_FROM"],data[i]["CHAT_CONTENT"],data[i]["CHAT_DATE"])
+			}
+			}
+			$("#new_talk").append("<li>"+
+						"<div class='notification_bottom'>"+
+							"<a href='/z_project-beta/chat'>See all messages</a>"+
+						"</div>"+
+					"</li>");
+			
+			startTime();
 		}
 	})
 }
-
+//읽지 않는 최신 메시지 append
+function get_new_talk(avatar,talk,time){
+	$('#new_talk').append("<li><a href='/z_project-beta/chat/"+avatar+"'>"+
+						   "<div class='user_img'>"+
+							"<img id='avatar1' src='/z_project-beta/images/avatar/"+avatar+".jpg' onerror='this.src=\"/z_project-beta/images/avatar/null.jpg\"'>"+
+							"<div style='text-align:center; width:30px'>"+avatar+"</div>"+
+						   "</div>"+
+						   "<div class='notification_desc'>"+
+						   "<p>"+talk+"</p>"+
+						   "<p>"+
+						   "<span>"+time+"</span>"+
+						   "</p>"+
+						   "</div>"+
+						   "<div class='clearfix'></div>"+
+						   "</a></li>")
+	
+}
+//이번에는 setTimeout으로 재귀함수 구현 
+var timerID
+function startTime(){
+	timerId=setTimeout("getRead_m()",3000);
+}
+//읽음처리 함수
+function talk_read(to_id){
+	$.ajax({
+		type : "POST",
+		url : "/z_project-beta/chat/read",
+		dataType: "json",
+		data : {
+			chat_to : to_id,
+		}
+	})
+}
 /*채팅*/

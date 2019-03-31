@@ -56,6 +56,7 @@ public class ComController {
 		try {
 		cs.add_user(ub, session, avatar_img);
 		}catch(Exception e) {	
+			e.printStackTrace();
 		}
 		System.out.println("컨트롤러 종료");
 		
