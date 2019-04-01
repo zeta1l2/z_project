@@ -59,7 +59,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 	public SqlSessionFactory sqlSessionFactory() throws Exception {
 		sqlSessionFactory = new SqlSessionFactoryBean();
 		sqlSessionFactory.setDataSource(ds);
-		//sqlSessionFactory.setTypeAliasesPackage("anno_test.maps");
+		sqlSessionFactory.setTypeAliasesPackage("anno_test.maps");
 		return (SqlSessionFactory) sqlSessionFactory.getObject();
 	}
 

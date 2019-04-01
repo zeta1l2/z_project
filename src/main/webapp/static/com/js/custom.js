@@ -63,7 +63,7 @@ function checkPw() {
 
     }
 }
-//암호화 공개키 바당옴
+//암호화 공개키 받아옴
 function getmodulus(){
 	$.ajax({
 		type: "get",
@@ -193,7 +193,6 @@ function send_talk(){
 			$('#chat_content').val(''); 
 			scroll_f=0;
 		}
-
 	});
 }
 var inter;
@@ -272,6 +271,7 @@ function getInfiniteChat(to_id){
 	inter=setInterval(function(){
 		getTalk(to_id);
 	},3000);
+	scroll_f=0;
 }
 //textarea
 $(function() {

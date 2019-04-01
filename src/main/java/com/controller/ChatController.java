@@ -33,6 +33,7 @@ public class ChatController {
 	public String chatForm() {
 		return "chatForm";
 	}
+	/*
 	//안읽은 최신 메시지 불러오기
 	@RequestMapping(value = {"","/"}, method = RequestMethod.POST)
 	public @ResponseBody ArrayList<HashMap<String,Object>> get_new_talk(HttpSession session) {
@@ -43,7 +44,7 @@ public class ChatController {
 		System.out.println("안읽은 최신 메시지 컨트롤러 종료");
 		return result;
 	}
-	
+	*/
 	/*채팅*/
 	@RequestMapping(value = {"/{from_id}"}, method = RequestMethod.GET)
 	public String chatForm(@PathVariable String from_id, Model m) {

@@ -86,11 +86,13 @@ public class ChatService {
 			for(HashMap<String, Object> date : dm.getNewTalk(user)) {
 				String d=dao.date_change(date.get("CHAT_DATE"));
 				d=dao.date_change(d);
-				date.replace("CHAT_CONTENT", ((String)date.get("CHAT_CONTENT")).substring(0,10)+"...");
+				String content=(String)date.get("CHAT_CONTENT");
+				date.replace("CHAT_CONTENT", content.substring(0,(content.length()<10)? content.length():10)+"...");
 				date.replace("CHAT_DATE", d.substring(0, 13));
 				result.add(date);
 			}
 			}catch(Exception e) {
+				e.printStackTrace();
 				System.out.println("불러올 내용 없음 서비스 종료");
 				return null;
 			}

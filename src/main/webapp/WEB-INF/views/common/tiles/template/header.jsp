@@ -42,46 +42,10 @@
 						<ul class="dropdown-menu" id="new_talk">
 							<li>
 								<div class="notification_header">
-									<h3>You have 3 new messages</h3>
+									<h3>You have not new messages</h3>
 								</div>
 							</li>
-							<li><a href="#">
-									<div class="user_img">
-										<img src="images/p4.png" alt="">
-									</div>
-									<div class="notification_desc">
-										<p>Lorem ipsum dolor</p>
-										<p>
-											<span>1 hour ago</span>
-											
-										</p>
-									</div>
-									<div class="clearfix"></div>
-							</a></li>
-							<li><a href="#">
-									<div class="user_img">
-										<img src="images/p2.png" alt="">
-									</div>
-									<div class="notification_desc">
-										<p>Lorem ipsum dolor</p>
-										<p>
-											<span>1 hour ago</span>
-										</p>
-									</div>
-									<div class="clearfix"></div>
-							</a></li>
-							<li><a href="#">
-									<div class="user_img">
-										<img src="images/p3.png" alt="">
-									</div>
-									<div class="notification_desc">
-										<p>Lorem ipsum dolor</p>
-										<p>
-											<span>1 hour ago</span>
-										</p>
-									</div>
-									<div class="clearfix"></div>
-							</a></li>
+							
 							<li>
 								<div class="notification_bottom">
 									<a href="${pageContext.request.contextPath}/chat">See all messages</a>
